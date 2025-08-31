@@ -10,13 +10,13 @@ import { MainComponent } from './components/main/main.component';
   standalone: true,
   imports: [FormsModule, CommonModule, HttpClientModule, MainComponent],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'] // ✅ fixed plural
+  styleUrls: ['./app.component.scss'], // ✅ fixed plural
 })
 export class AppComponent implements OnInit {
   locations: any[] = [];
   items: any[] = [];
   newLocation = '';
-  title = 'sell-furniture';
+  title = 'sell_furniture';
 
   constructor(private locationService: LocationService) {
     this.loadLocations();
@@ -29,21 +29,22 @@ export class AppComponent implements OnInit {
   }
 
   loadLocations() {
-    this.locationService.getLocations().subscribe(data => {
+    this.locationService.getLocations().subscribe((data) => {
       this.locations = data;
     });
   }
 
   loadItems() {
-    this.locationService.getItems().subscribe(data => {
+    this.locationService.getItems().subscribe((data) => {
       this.items = data;
     });
   }
 
   addLocation() {
     if (this.newLocation.trim()) {
-      this.locationService.addLocation({ name: this.newLocation })
-        .subscribe(loc => {
+      this.locationService
+        .addLocation({ name: this.newLocation })
+        .subscribe((loc) => {
           this.locations.push(loc);
           this.newLocation = '';
         });

@@ -9,38 +9,39 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [FormsModule, CommonModule, HttpClientModule],
   templateUrl: './main.component.html',
-  styleUrl: './main.component.scss'
+  styleUrl: './main.component.scss',
 })
 export class MainComponent {
   locations: any[] = [];
   items: any[] = [];
   newLocation = '';
-  title = 'sell-furniture';
-constructor(private locationService: LocationService){}
-ngOnInit() {
-  this.loadLocations();
-  this.loadItems();
-}
-
-loadLocations() {
-  this.locationService.getLocations().subscribe(data => {
-    this.locations = data;
-  });
-}
-
-loadItems() {
-  this.locationService.getItems().subscribe(data => {
-    this.items = data;
-  });
-}
-
-addLocation() {
-  if (this.newLocation.trim()) {
-    this.locationService.addLocation({ name: this.newLocation })
-      .subscribe(loc => {
-        this.locations.push(loc);
-        this.newLocation = '';
-      });
+  title = 'sell_furniture';
+  constructor(private locationService: LocationService) {}
+  ngOnInit() {
+    this.loadLocations();
+    this.loadItems();
   }
-}
+
+  loadLocations() {
+    this.locationService.getLocations().subscribe((data) => {
+      this.locations = data;
+    });
+  }
+
+  loadItems() {
+    this.locationService.getItems().subscribe((data) => {
+      this.items = data;
+    });
+  }
+
+  addLocation() {
+    if (this.newLocation.trim()) {
+      this.locationService
+        .addLocation({ name: this.newLocation })
+        .subscribe((loc) => {
+          this.locations.push(loc);
+          this.newLocation = '';
+        });
+    }
+  }
 }

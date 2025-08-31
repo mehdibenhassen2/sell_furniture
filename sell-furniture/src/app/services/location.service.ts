@@ -9,15 +9,15 @@ export interface Location {
 export interface items {
   id: number;
   title: string;
-  pictures: []};
-
+  pictures: [];
+}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LocationService {
-  private apiUrl = 'https://sell-furniture-node.onrender.com/api/locations'; // ✅ backend URL
-  private apiUrlItems = 'https://sell-furniture-node.onrender.com/api/items'; // ✅ backend URL
+  private apiUrl = 'https://sell_furniture-node.onrender.com/api/locations'; // ✅ backend URL
+  private apiUrlItems = 'https://sell_furniture-node.onrender.com/api/items'; // ✅ backend URL
 
   constructor(private http: HttpClient) {}
 
@@ -25,10 +25,10 @@ export class LocationService {
   getLocations(): Observable<Location[]> {
     return this.http.get<Location[]>(this.apiUrl);
   }
-    // Get all items
-    getItems(): Observable<items[]> {
-      return this.http.get<items[]>(this.apiUrlItems);
-    }
+  // Get all items
+  getItems(): Observable<items[]> {
+    return this.http.get<items[]>(this.apiUrlItems);
+  }
 
   // Add new location
   addLocation(location: Location): Observable<Location> {
