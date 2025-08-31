@@ -1,0 +1,16 @@
+<h1>Locations</h1>
+<!-- Show existing locations -->
+<ul>
+    <li *ngFor="let loc of locations">{{ loc.name }} {{ loc.city ?? "" }}</li>
+    <li *ngFor="let item of items">
+      <span> {{ item.title }}</span>
+  
+      <div *ngFor="let picture of item.pictures">
+        <img [src]="picture.url" [alt]="picture.title" width="200" />
+      </div>
+    </li>
+  </ul>
+  
+  <!-- Form to add a new location -->
+  <input type="text" id="locationname" name="locationname" [(ngModel)]="newLocation" placeholder="Add location" />
+  <button (click)="addLocation()">Add</button>
