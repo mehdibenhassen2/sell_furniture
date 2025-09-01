@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "cd sell_furniture && npm install && npm run build",
-    "start": "cd sell_furniture && node dist/sell_furniture/server/server.mjs"
+    "start": "node sell_furniture/dist/sell_furniture/server/server.mjs"
   },
   "devDependencies": {
     "@angular/cli": "^19.2.15"
