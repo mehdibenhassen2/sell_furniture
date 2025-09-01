@@ -1,7 +1,6 @@
 <h1>Locations</h1>
 <!-- Show existing locations -->
-<div *ngIf="locations.length > 0 || items.length > 0">
-  <ul>
+<ul>
     <li *ngFor="let loc of locations">{{ loc.name }} {{ loc.city ?? "" }}</li>
     <li *ngFor="let item of items">
       <span> {{ item.title }}</span>
@@ -11,14 +10,6 @@
       </div>
     </li>
   </ul>
-</div>
-
-<!-- Show message when no data is available -->
-<div *ngIf="locations.length === 0 && items.length === 0">
-  <p>Welcome to SellFurniture! 🏠</p>
-  <p>No locations or items available at the moment.</p>
-  <p>Try adding a location below to get started!</p>
-</div>
   
   <!-- Form to add a new location -->
   <input type="text" id="locationname" name="locationname" [(ngModel)]="newLocation" placeholder="Add location" />
