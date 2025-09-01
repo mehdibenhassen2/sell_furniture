@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { LocationService } from '../../services/location.service';
 import { FormsModule } from '@angular/forms';
@@ -11,26 +10,40 @@ import { CommonModule } from '@angular/common';
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
 })
-export class MainComponent {
+export class MainComponent implements OnInit {
   locations: any[] = [];
   items: any[] = [];
   newLocation = '';
   title = 'sell_furniture';
   constructor(private locationService: LocationService) {}
   ngOnInit() {
-    this.loadLocations();
-    this.loadItems();
+    console.log('MainComponent ngOnInit called');
+    // Temporarily disable service calls to test if app loads
+    // this.loadLocations();
+    // this.loadItems();
   }
 
   loadLocations() {
-    this.locationService.getLocations().subscribe((data) => {
-      this.locations = data;
+    this.locationService.getLocations().subscribe({
+      next: (data) => {
+        this.locations = data;
+      },
+      error: (error) => {
+        console.error('Error loading locations in MainComponent:', error);
+        this.locations = [];
+      }
     });
   }
 
   loadItems() {
-    this.locationService.getItems().subscribe((data) => {
-      this.items = data;
+    this.locationService.getItems().subscribe({
+      next: (data) => {
+        this.items = data;
+      },
+      error: (error) => {
+        console.error('Error loading items in MainComponent:', error);
+        this.items = [];
+      }
     });
   }
 
