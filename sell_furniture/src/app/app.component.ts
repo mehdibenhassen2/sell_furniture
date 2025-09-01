@@ -29,14 +29,26 @@ export class AppComponent implements OnInit {
   }
 
   loadLocations() {
-    this.locationService.getLocations().subscribe((data) => {
-      this.locations = data;
+    this.locationService.getLocations().subscribe({
+      next: (data) => {
+        this.locations = data;
+      },
+      error: (error) => {
+        console.error('Error loading locations:', error);
+        this.locations = []; // Set empty array on error
+      }
     });
   }
 
   loadItems() {
-    this.locationService.getItems().subscribe((data) => {
-      this.items = data;
+    this.locationService.getItems().subscribe({
+      next: (data) => {
+        this.items = data;
+      },
+      error: (error) => {
+        console.error('Error loading items:', error);
+        this.items = []; // Set empty array on error
+      }
     });
   }
 
@@ -44,9 +56,15 @@ export class AppComponent implements OnInit {
     if (this.newLocation.trim()) {
       this.locationService
         .addLocation({ name: this.newLocation })
-        .subscribe((loc) => {
-          this.locations.push(loc);
-          this.newLocation = '';
+        .subscribe({
+          next: (loc) => {
+            this.locations.push(loc);
+            this.newLocation = '';
+          },
+          error: (error) => {
+            console.error('Error adding location:', error);
+            // Optionally show a user-friendly error message
+          }
         });
     }
   }
