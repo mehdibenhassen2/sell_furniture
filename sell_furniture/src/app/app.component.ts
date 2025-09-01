@@ -20,12 +20,14 @@ export class AppComponent implements OnInit {
   currentTime = new Date().toLocaleString();
 
   constructor(private locationService: LocationService) {
+    console.log('AppComponent constructor called');
     // Temporarily disable service calls to test if app loads
     // this.loadLocations();
     // this.loadItems();
   }
 
   ngOnInit() {
+    console.log('AppComponent ngOnInit called');
     // Temporarily disable service calls to test if app loads
     // this.loadLocations();
     // this.loadItems();
