@@ -5,7 +5,6 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --configuration production",
-    "serve": "node dist/sell_furniture/server/server.mjs",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
