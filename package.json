@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "cd sell_furniture && npm install && npm run build && mkdir -p ../dist && cp -r dist/sell_furniture/browser/* ../dist/"
+    "build": "cd sell_furniture && npm install && npm run build && mkdir -p ../dist/sell_furniture && cp -r dist/sell_furniture/browser ../dist/sell_furniture/"
   },
   "devDependencies": {
     "@angular/cli": "^19.2.15"
