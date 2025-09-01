@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "cd sell_furniture && npm run build"
+    "build": "cd sell_furniture && npm install && npm run build"
   },
   "devDependencies": {
     "@angular/cli": "^19.2.15"
