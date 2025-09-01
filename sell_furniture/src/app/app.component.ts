@@ -17,15 +17,18 @@ export class AppComponent implements OnInit {
   items: any[] = [];
   newLocation = '';
   title = 'sell_furniture';
+  currentTime = new Date().toLocaleString();
 
   constructor(private locationService: LocationService) {
-    this.loadLocations();
-    this.loadItems();
+    // Temporarily disable service calls to test if app loads
+    // this.loadLocations();
+    // this.loadItems();
   }
 
   ngOnInit() {
-    this.loadLocations();
-    this.loadItems();
+    // Temporarily disable service calls to test if app loads
+    // this.loadLocations();
+    // this.loadItems();
   }
 
   loadLocations() {
