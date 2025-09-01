@@ -4,13 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-      "build": "ng build && ng run sell-furniture:server",
-  "serve:ssr": "node dist/sell-furniture/server/main.mjs",
-    "watch": "ng build --watch --configuration development",
+    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "serve:ssr:sell_furniture": "node dist/sell_furniture/server/server.mjs"
-  },
+    "e2e": "ng e2e"},
   "private": true,
   "dependencies": {
     "@angular/animations": "^17.2.0",
