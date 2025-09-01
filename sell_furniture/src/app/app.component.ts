@@ -73,4 +73,9 @@ export class AppComponent implements OnInit {
         });
     }
   }
+
+  testClick() {
+    alert('Angular is working! Button click detected!');
+    console.log('Button clicked! Angular is working!');
+  }
 }
