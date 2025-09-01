@@ -3,10 +3,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { LocationService } from '../../services/location.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { PicturesContainerComponent } from './pictures-container/pictures-container.component';
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule],
+  imports: [FormsModule, CommonModule, HttpClientModule, PicturesContainerComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
 })

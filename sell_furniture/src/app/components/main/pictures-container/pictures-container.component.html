@@ -1,0 +1,21 @@
+<div class="gallery-container">
+  <!-- Left side: Big Picture -->
+  <div class="big-picture" *ngIf="selectedPicture">
+    <img [src]="selectedPicture.url" [alt]="selectedPicture.title" />
+  </div>
+
+  <!-- Right side: Thumbnails -->
+  <div class="thumbnails">
+    <div
+      *ngFor="let picture of pictures"
+      class="thumbnail"
+      (click)="showPicture(picture)"
+    >
+      <img
+        [src]="picture.url"
+        [alt]="picture.title"
+        [class.active]="picture === selectedPicture"
+      />
+    </div>
+  </div>
+</div>
