@@ -18,9 +18,8 @@ export class MainComponent implements OnInit {
   constructor(private locationService: LocationService) {}
   ngOnInit() {
     console.log('MainComponent ngOnInit called');
-    // Temporarily disable service calls to test if app loads
-    // this.loadLocations();
-    // this.loadItems();
+this.loadLocations();
+ this.loadItems();
   }
 
   loadLocations() {
