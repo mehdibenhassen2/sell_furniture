@@ -4,10 +4,16 @@
   <li *ngFor="let loc of locations">{{ loc.name }} {{ loc.city ?? "" }}</li>
 </ul>
   <div *ngFor="let item of items">
-    <div><label>Title: </label><span> {{ item.title }}</span></div>
+    <div class="item-title">{{ item.title }}</div>
     
-    <div><label>Description: </label> <span> {{ item.description }}</span></div>
-    <div><label>Price: </label> <span> $  {{ item.price }}</span></div>
+    <div class="item-description">
+      <label class="description-label">Description</label>
+      <div class="description-content" [innerHTML]="item.description | descriptionFormat"></div>
+    </div>
+    <div class="item-price">
+      <label class="price-label">Price</label>
+      <span class="price-value">${{ item.price }}</span>
+    </div>
     <app-pictures-container [pictures]="item.pictures"></app-pictures-container>
   </div>
 

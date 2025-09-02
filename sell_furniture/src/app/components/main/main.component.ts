@@ -4,10 +4,11 @@ import { LocationService } from '../../services/location.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PicturesContainerComponent } from './pictures-container/pictures-container.component';
+import { DescriptionFormatPipe } from '../../pipes/description-format.pipe';
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule, PicturesContainerComponent],
+  imports: [FormsModule, CommonModule, HttpClientModule, PicturesContainerComponent, DescriptionFormatPipe],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
 })

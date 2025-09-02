@@ -1,7 +1,7 @@
 <div class="gallery-container">
   <!-- Left side: Big Picture -->
   <div class="big-picture" *ngIf="selectedPicture">
-    <img [src]="selectedPicture.url" [alt]="selectedPicture.title" />
+    <img [src]="selectedPicture.url" [alt]="selectedPicture.title" (click)="openModal(selectedPicture)" />
   </div>
 
   <!-- Right side: Thumbnails -->
@@ -15,7 +15,38 @@
         [src]="picture.url"
         [alt]="picture.title"
         [class.active]="picture === selectedPicture"
+        (click)="showPicture(picture)"
       />
+    </div>
+  </div>
+</div>
+
+<!-- Modal Window -->
+<div class="modal-overlay" *ngIf="modalOpen" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Close Button -->
+    <button class="close-button" (click)="closeModal()">×</button>
+    
+    <!-- Modal Image -->
+    <img 
+      [src]="modalImage?.url" 
+      [alt]="modalImage?.title"
+      class="modal-image"
+      [class.dragging]="isDragging"
+      [style.transform]="'scale(' + zoomLevel + ') translate(' + translateX + 'px, ' + translateY + 'px)'"
+      (wheel)="onWheel($event)"
+      (mousedown)="onMouseDown($event)"
+      (mousemove)="onMouseMove($event)"
+      (mouseup)="onMouseUp()"
+      (mouseleave)="onMouseLeave()"
+    />
+    
+    <!-- Zoom Controls -->
+    <div class="zoom-controls">
+      <button (click)="zoomIn()">+</button>
+      <span>{{ Math.round(zoomLevel * 100) }}%</span>
+      <button (click)="zoomOut()">-</button>
+      <button (click)="resetZoom()" class="reset-btn">Reset</button>
     </div>
   </div>
 </div>
