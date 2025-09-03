@@ -10,6 +10,6 @@ export class DescriptionFormatPipe implements PipeTransform {
     if (!value) return '';
     
     // Replace "- " with HTML line breaks
-    return value.replace(/- /g, '<br>');
+    return value.replace(/- /g, '<br> - ');
   }
 }

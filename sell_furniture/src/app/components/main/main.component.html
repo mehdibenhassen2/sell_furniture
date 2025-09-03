@@ -10,6 +10,21 @@
       <label class="description-label">Description</label>
       <div class="description-content" [innerHTML]="item.description | descriptionFormat"></div>
     </div>
+
+    <div class="item-condition">
+      <label class="description-label">Condition</label>
+    
+      <div class="condition-boxes">
+        <div
+          class="condition-box"
+          *ngFor="let c of ['Completely New', 'Like New', 'Good', 'Fair']"
+          [class.active]="c.toLowerCase() === item.condition?.toLowerCase()"
+        >
+          {{ c }}
+        </div>
+      </div>
+    </div>
+
     <div class="item-price">
       <label class="price-label">Price</label>
       <span class="price-value">${{ item.price }}</span>
