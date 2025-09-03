@@ -46,7 +46,7 @@
 
     <!-- Items List -->
     <div *ngFor="let item of filteredItems">
-      <div class="item_container">
+      <div *ngIf="item.available ==true" class="item_container">
         <div class="item-title">{{ item.title }}</div>
 
         <div class="item-description">
