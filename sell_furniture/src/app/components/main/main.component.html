@@ -8,8 +8,8 @@
 </ul>-->
     <!-- Category Filters -->
     <header>
-      <h1>Furniture Marketplace</h1>
-      <p class="subtitle">Find the perfect items for your home</p>
+      <h1>Moving Sale</h1>
+      <p class="subtitle">This is a personal sale, not a business!</p>
     </header>
 
     <div class="category-section">
@@ -43,8 +43,12 @@
     </div>
 
     <div class="category-filters"></div>
-
+    <div *ngIf="loading" class="spinner-container">
+      <i class="fas fa-spinner fa-spin fa-2x"></i>
+      <p>Loading items...</p>
+    </div>
     <!-- Items List -->
+    <div *ngIf="!loading">
     <div *ngFor="let item of filteredItems">
       <div *ngIf="item.available ==true" class="item_container">
         <div class="item-title">{{ item.title }}</div>
@@ -132,6 +136,7 @@
 />
 <button (click)="addLocation()">Add</button>
 -->
+    </div>
     </div>
   </div>
 </body>

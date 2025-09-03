@@ -14,7 +14,7 @@ import { DescriptionFormatPipe } from '../../pipes/description-format.pipe';
     CommonModule,
     HttpClientModule,
     PicturesContainerComponent,
-    DescriptionFormatPipe
+    DescriptionFormatPipe,
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
@@ -24,14 +24,23 @@ export class MainComponent implements OnInit {
   items: any[] = [];
   newLocation = '';
   title = 'sell_furniture';
-  categories = ['Bed', 'Dresser', 'Technology', 'Decoration', 'Chair', 'Toys','Other'];
+  categories = [
+    'Bed',
+    'Dresser',
+    'Technology',
+    'Decoration',
+    'Chair',
+    'Toys',
+    'Other',
+  ];
   selectedCategories: string[] = [];
   filteredItems: any[] = [];
+  loading: boolean = true; // default true until data loads
 
   constructor(private locationService: LocationService) {}
 
   ngOnInit() {
-    this.loadLocations();
+    // this.loadLocations();
     this.loadItems();
     this.selectAllCategories(); // Fixed typo in method name
   }
@@ -44,21 +53,24 @@ export class MainComponent implements OnInit {
       error: (error) => {
         console.error('Error loading locations:', error);
         this.locations = [];
-      }
+      },
     });
   }
 
   loadItems() {
+    this.loading = true;
     this.locationService.getItems().subscribe({
       next: (data) => {
         this.items = data;
         this.applyFilters(); // Apply filters after items load
+        this.loading = false;
       },
       error: (error) => {
         console.error('Error loading items:', error);
         this.items = [];
         this.applyFilters();
-      }
+        this.loading = false;
+      },
     });
   }
 
@@ -71,7 +83,7 @@ export class MainComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error adding location:', error);
-        }
+        },
       });
     }
   }
@@ -100,7 +112,8 @@ export class MainComponent implements OnInit {
     }
   }
 
-  selectAllCategories() { // Fixed method name typo
+  selectAllCategories() {
+    // Fixed method name typo
     this.selectedCategories = [...this.categories];
     this.applyFilters();
   }
