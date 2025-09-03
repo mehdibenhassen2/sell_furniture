@@ -390,3 +390,21 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+.url {
+  color: #3498db;
+  text-decoration: none;
+  word-break: break-all;
+  display: inline-block;
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+}
+
+.url:hover {
+  background: rgba(52, 152, 219, 0.2);
+  text-decoration: underline;
+}
+
+.url i {
+  margin-right: 5px;
+  font-size: 14px;
+}

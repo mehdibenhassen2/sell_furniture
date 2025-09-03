@@ -70,6 +70,33 @@
               </span>
             </div>
           </div>
+          <div
+          *ngIf="item.url"
+          class="item-description item-description-small"
+        >
+          <label class="description-label description-label-small">
+            URL
+          </label>
+          <div class="description-content description-content-small">
+            <a href={{item.url}} target="_blank" rel="noopener noreferrer" class="url">
+              <i class="fas fa-external-link-alt"></i>{{item.url}}
+          </a>
+          </div>
+        </div>
+
+        <div
+        *ngIf="item.instructions"
+        class="item-description item-description-small"
+      >
+        <label class="description-label description-label-small">
+          Instruction Manual
+        </label>
+        <div class="description-content description-content-small">
+          <a href={{item.instructions}} target="_blank" rel="noopener noreferrer" class="url">
+            <i class="fas fa-external-link-alt"></i>{{item.instructions}}
+        </a>
+        </div>
+      </div>
         </div>
 
         <div class="item-condition">
