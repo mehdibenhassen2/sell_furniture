@@ -1,185 +1,184 @@
 .gallery-container {
-    display: flex;
-    gap: 1rem;
-    min-height: 400px; /* Ensure consistent height */
-    align-items: flex-start; /* Align items to top */
-    margin: 0 100px; /* 100px margin on left and right */
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08); /* Beautiful shadow */
-    border-radius: 12px; /* Rounded corners */
-    padding: 1rem; /* Internal padding */
-    background-color: #ffffff; /* White background */
+  display: flex;
+  gap: 1rem;
+  min-height: 400px;
+  align-items: flex-start;
+  margin: 0 100px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 1rem;
+  background-color: #ffffff;
+}
+
+.big-picture {
+  flex: 2;
+  img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 8px;
   }
-  
-  .big-picture {
-    flex: 2;
+}
+
+.thumbnails {
+  width: 200px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+  max-height: 400px;
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+
+  .thumbnail {
+    flex-shrink: 0;
+
     img {
       width: 100%;
-      max-height: 400px;
-      object-fit: contain; /* Ensures pictures are fully displayed */
-      border-radius: 8px;
-    }
-  }
-  
-  .thumbnails {
-    width: 200px; /* Fixed width for right side */
-    flex-shrink: 0; /* Prevent shrinking */
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    overflow-y: auto;
-    max-height: 400px; /* Fixed height to match big picture */
-    padding: 0.5rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-  
-    .thumbnail {
-      flex-shrink: 0; /* Prevent thumbnails from shrinking */
-      
-      img {
-        width: 100%;
-        height: 80px; /* Fixed height for all thumbnails */
-        object-fit: contain; /* Ensures pictures are fully displayed */
-        cursor: pointer;
-        border-radius: 6px;
-        transition: transform 0.2s, border 0.2s;
-        border: 2px solid transparent;
-    
-        &.active {
-          border: 2px solid #007bff;
-        }
-    
-        &:hover {
-          transform: scale(1.05);
-          border: 2px solid #0056b3;
-        }
-      }
-    }
-  }
-
-  // Modal Styles
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    cursor: pointer;
-  }
-
-  .modal-content {
-    position: relative;
-    max-width: 90%;
-    max-height: 90%;
-    background-color: white;
-    border-radius: 12px;
-    padding: 0;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    cursor: default;
-    overflow: hidden; /* Prevent content from going outside modal */
-    display: flex;
-    flex-direction: column;
-  }
-
-  .close-button {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: none;
-    border: none;
-    font-size: 2rem;
-    color: #666;
-    cursor: pointer;
-    z-index: 1001;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: all 0.2s;
-
-    &:hover {
-      background-color: #f0f0f0;
-      color: #333;
-    }
-  }
-
-  .modal-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    transition: transform 0.1s ease;
-    cursor: grab;
-    transform-origin: center center; /* Zoom from center */
-    display: block;
-    margin: 0 auto; /* Center the image */
-    padding: 60px 1rem 1rem 1rem; /* Space for controls at top */
-    user-select: none; /* Prevent text selection while dragging */
-
-    &:active {
-      cursor: grabbing;
-    }
-
-    &.dragging {
-      transition: none; /* Disable transition while dragging for smooth movement */
-    }
-  }
-
-  .zoom-controls {
-    position: absolute;
-    top: 10px;
-    left: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    background-color: rgba(248, 249, 250, 0.95);
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1001;
-
-    button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 35px;
-      height: 35px;
-      font-size: 1rem;
+      height: 80px;
+      object-fit: contain;
       cursor: pointer;
-      transition: background-color 0.2s;
+      border-radius: 6px;
+      transition: transform 0.2s, border 0.2s;
+      border: 2px solid transparent;
+
+      &.active {
+        border: 2px solid #007bff;
+      }
 
       &:hover {
-        background-color: #0056b3;
+        transform: scale(1.05);
+        border: 2px solid #0056b3;
       }
-
-      &.reset-btn {
-        border-radius: 6px;
-        width: auto;
-        padding: 0 8px;
-        font-size: 0.8rem;
-        background-color: #6c757d;
-        margin-left: 0.5rem;
-
-        &:hover {
-          background-color: #545b62;
-        }
-      }
-    }
-
-    span {
-      font-weight: bold;
-      color: #333;
-      min-width: 50px;
-      text-align: center;
-      font-size: 0.9rem;
     }
   }
-  
+}
+
+// Modal Styles
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  background-color: white;
+  border-radius: 12px;
+  padding: 0;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  cursor: default;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #666;
+  cursor: pointer;
+  z-index: 1001;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+}
+
+.modal-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.1s ease;
+  cursor: grab;
+  transform-origin: center center;
+  display: block;
+  margin: 0 auto;
+  padding: 60px 1rem 1rem 1rem;
+  user-select: none;
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  &.dragging {
+    transition: none;
+  }
+}
+
+.zoom-controls {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: rgba(248, 249, 250, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+
+    &.reset-btn {
+      border-radius: 6px;
+      width: auto;
+      padding: 0 8px;
+      font-size: 0.8rem;
+      background-color: #6c757d;
+      margin-left: 0.5rem;
+
+      &:hover {
+        background-color: #545b62;
+      }
+    }
+  }
+
+  span {
+    font-weight: bold;
+    color: #333;
+    min-width: 50px;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+}

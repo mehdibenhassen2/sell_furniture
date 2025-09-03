@@ -1,9 +1,9 @@
-<h1>Locations</h1>
-<!-- Show existing locations -->
+<!--<h1>Locations</h1>
 <ul>
   <li *ngFor="let loc of locations">{{ loc.name }} {{ loc.city ?? "" }}</li>
-</ul>
+</ul>-->
   <div *ngFor="let item of items">
+    <div class="item_container">
     <div class="item-title">{{ item.title }}</div>
     
     <div class="item-description">
@@ -15,10 +15,11 @@
       <span class="price-value">${{ item.price }}</span>
     </div>
     <app-pictures-container [pictures]="item.pictures"></app-pictures-container>
+    </div>
   </div>
 
 
-<!-- Form to add a new location -->
+<!-- Form to add a new location 
 <input
   type="text"
   id="locationname"
@@ -27,3 +28,4 @@
   placeholder="Add location"
 />
 <button (click)="addLocation()">Add</button>
+-->
