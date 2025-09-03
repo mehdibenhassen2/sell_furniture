@@ -24,7 +24,7 @@ export class MainComponent implements OnInit {
   items: any[] = [];
   newLocation = '';
   title = 'sell_furniture';
-  categories = ['Bed', 'Dresser', 'Technology', 'Decoration', 'Chair', 'Other'];
+  categories = ['Bed', 'Dresser', 'Technology', 'Decoration', 'Chair', 'Toys','Other'];
   selectedCategories: string[] = [];
   filteredItems: any[] = [];
 
