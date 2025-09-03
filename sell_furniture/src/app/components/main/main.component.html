@@ -1,54 +1,101 @@
-<!--<h1>Locations</h1>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<body>
+  <div class="container">
+    <!--<h1>Locations</h1>
 <ul>
   <li *ngFor="let loc of locations">{{ loc.name }} {{ loc.city ?? "" }}</li>
 </ul>-->
-<div *ngFor="let item of items">
-  <div class="item_container">
-    <div class="item-title">{{ item.title }}</div>
+    <!-- Category Filters -->
+    <header>
+      <h1>Furniture Marketplace</h1>
+      <p class="subtitle">Find the perfect items for your home</p>
+    </header>
 
-    <div class="item-description">
-      <label class="description-label">Description</label>
-      <div
-        class="description-content"
-        [innerHTML]="item.description | descriptionFormat"
-      ></div>
+    <div class="category-section">
+      <div class="section-title">
+        <i class="fas fa-filter"></i>
+        Please Check Your Category
+      </div>
+
+      <div class="category-filters">
+        <label class="filter-label" *ngFor="let category of categories">
+          <input
+            type="checkbox"
+            [value]="category"
+            (change)="onCategoryChange($event)"
+            [checked]="selectedCategories.includes(category)"
+          />
+
+
+
+
+
+          
+          <span>{{ category }}</span>
+        </label>
+
+        <button class="select-all-btn" (click)="selectAllCategories()">
+          <i class="fas fa-check-square"></i>
+          Select All
+        </button>
+      </div>
     </div>
 
-    <div class="item-description item-description-small">
-      <label class="description-label description-label-small"
-        >Retail Price</label
-      >
-      <div class="description-content description-content-small">
-        $ {{ item.retail | number:'1.2-2' }} + tax =
-        <span class="final-price">
-          $ {{ item.retail * 1.13 | number:'1.2-2' }}
-        </span>
-      </div>
-      <div class="item-condition">
-        <label class="description-label">Condition</label>
+    <div class="category-filters"></div>
 
-        <div class="condition-boxes">
+    <!-- Items List -->
+    <div *ngFor="let item of filteredItems">
+      <div class="item_container">
+        <div class="item-title">{{ item.title }}</div>
+
+        <div class="item-description">
+          <label class="description-label">Description</label>
           <div
-            class="condition-box"
-            *ngFor="let c of ['Completely New', 'Like New', 'Good', 'Fair']"
-            [class.active]="c.toLowerCase() === item.condition?.toLowerCase()"
+            class="description-content"
+            [innerHTML]="item.description | descriptionFormat"
+          ></div>
+
+          <div
+            *ngIf="item.retail"
+            class="item-description item-description-small"
           >
-            {{ c }}
+            <label class="description-label description-label-small">
+              Retail Price
+            </label>
+            <div class="description-content description-content-small">
+              $ {{ item.retail | number : "1.2-2" }} + tax =
+              <span class="final-price">
+                $ {{ item.retail * 1.13 | number : "1.2-2" }}
+              </span>
+            </div>
           </div>
+        </div>
+
+        <div class="item-condition">
+          <label class="description-label">Condition</label>
+
+          <div class="condition-boxes">
+            <div
+              class="condition-box"
+              *ngFor="let c of ['Completely New', 'Like New', 'Good', 'Fair']"
+              [class.active]="c.toLowerCase() === item.condition?.toLowerCase()"
+            >
+              {{ c }}
+            </div>
+          </div>
+
+          <div class="item-price">
+            <label class="price-label">Price</label>
+            <span class="price-value">${{ item.price }}</span>
+          </div>
+          <app-pictures-container
+            [pictures]="item.pictures"
+          ></app-pictures-container>
         </div>
       </div>
 
-      <div class="item-price">
-        <label class="price-label">Price</label>
-        <span class="price-value">${{ item.price }}</span>
-      </div>
-      <app-pictures-container
-        [pictures]="item.pictures"
-      ></app-pictures-container>
-    </div>
-  </div>
-
-  <!-- Form to add a new location 
+      <!-- Form to add a new location 
 <input
   type="text"
   id="locationname"
@@ -57,4 +104,7 @@
   placeholder="Add location"
 />
 <button (click)="addLocation()">Add</button>
---></div>
+-->
+    </div>
+  </div>
+</body>
