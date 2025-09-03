@@ -2,39 +2,53 @@
 <ul>
   <li *ngFor="let loc of locations">{{ loc.name }} {{ loc.city ?? "" }}</li>
 </ul>-->
-  <div *ngFor="let item of items">
-    <div class="item_container">
+<div *ngFor="let item of items">
+  <div class="item_container">
     <div class="item-title">{{ item.title }}</div>
-    
+
     <div class="item-description">
       <label class="description-label">Description</label>
-      <div class="description-content" [innerHTML]="item.description | descriptionFormat"></div>
+      <div
+        class="description-content"
+        [innerHTML]="item.description | descriptionFormat"
+      ></div>
     </div>
 
-    <div class="item-condition">
-      <label class="description-label">Condition</label>
-    
-      <div class="condition-boxes">
-        <div
-          class="condition-box"
-          *ngFor="let c of ['Completely New', 'Like New', 'Good', 'Fair']"
-          [class.active]="c.toLowerCase() === item.condition?.toLowerCase()"
-        >
-          {{ c }}
+    <div class="item-description item-description-small">
+      <label class="description-label description-label-small"
+        >Retail Price</label
+      >
+      <div class="description-content description-content-small">
+        $ {{ item.retail | number:'1.2-2' }} + tax =
+        <span class="final-price">
+          $ {{ item.retail * 1.13 | number:'1.2-2' }}
+        </span>
+      </div>
+      <div class="item-condition">
+        <label class="description-label">Condition</label>
+
+        <div class="condition-boxes">
+          <div
+            class="condition-box"
+            *ngFor="let c of ['Completely New', 'Like New', 'Good', 'Fair']"
+            [class.active]="c.toLowerCase() === item.condition?.toLowerCase()"
+          >
+            {{ c }}
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="item-price">
-      <label class="price-label">Price</label>
-      <span class="price-value">${{ item.price }}</span>
-    </div>
-    <app-pictures-container [pictures]="item.pictures"></app-pictures-container>
+      <div class="item-price">
+        <label class="price-label">Price</label>
+        <span class="price-value">${{ item.price }}</span>
+      </div>
+      <app-pictures-container
+        [pictures]="item.pictures"
+      ></app-pictures-container>
     </div>
   </div>
 
-
-<!-- Form to add a new location 
+  <!-- Form to add a new location 
 <input
   type="text"
   id="locationname"
@@ -43,4 +57,4 @@
   placeholder="Add location"
 />
 <button (click)="addLocation()">Add</button>
--->
+--></div>
