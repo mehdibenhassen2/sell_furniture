@@ -18,6 +18,7 @@ export interface items {
 export class LocationService {
   private apiUrl = 'https://sell-furniture-node.onrender.com/api/locations'; // ✅ backend URL
   private apiUrlItems = 'https://sell-furniture-node.onrender.com/api/items'; // ✅ backend URL
+  private apiUrlVisitors = 'https://sell-furniture-node.onrender.com/api/items'; // ✅ backend URL
 
   constructor(private http: HttpClient) {}
 
@@ -37,6 +38,6 @@ export class LocationService {
     // Add new visitor
     trackVisitor(): Observable<any> {
       // POST an empty object; backend fills timestamp, IP, and userAgent
-      return this.http.post<any>(`${this.apiUrl}/visit`, {});
+      return this.http.post<any>(`${this.apiUrlVisitors}/visit`, {});
     }
 }
