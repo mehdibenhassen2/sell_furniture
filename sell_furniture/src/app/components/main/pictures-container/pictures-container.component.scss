@@ -8,6 +8,13 @@
   border-radius: 12px;
   padding: 1rem;
   background-color: #ffffff;
+
+  // ✅ Responsive for small screens
+  @media (max-width: 768px) {
+    flex-direction: column;   // stack vertically
+    margin: 0 20px;          // smaller margin
+    min-height: auto;        // allow natural height
+  }
 }
 
 .big-picture {
@@ -17,6 +24,10 @@
     max-height: 400px;
     object-fit: contain;
     border-radius: 8px;
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: 1rem; // spacing before thumbnails
   }
 }
 
@@ -32,6 +43,14 @@
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   background-color: #f9f9f9;
+
+  @media (max-width: 768px) {
+    width: 100%;        // full width below the big picture
+    max-height: 150px;  // smaller thumbnails area
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
 
   .thumbnail {
     flex-shrink: 0;
