@@ -34,4 +34,9 @@ export class LocationService {
   addLocation(location: Location): Observable<Location> {
     return this.http.post<Location>(this.apiUrl, location);
   }
+    // Add new visitor
+    trackVisitor(): Observable<any> {
+      // POST an empty object; backend fills timestamp, IP, and userAgent
+      return this.http.post<any>(`${this.apiUrl}/visit`, {});
+    }
 }

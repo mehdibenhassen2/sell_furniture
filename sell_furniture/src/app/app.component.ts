@@ -28,9 +28,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     console.log('AppComponent ngOnInit called');
-    // Temporarily disable service calls to test if app loads
-    // this.loadLocations();
-    // this.loadItems();
+   this.trackVisitor();
   }
 
   loadLocations() {
@@ -73,7 +71,12 @@ export class AppComponent implements OnInit {
         });
     }
   }
-
+  trackVisitor() {
+    this.locationService.trackVisitor().subscribe({
+      next: () => console.log('Visitor logged ✅'),
+      error: (err) => console.error('Error logging visitor ❌', err)
+    });
+  }
   testClick() {
     alert('Angular is working! Button click detected!');
     console.log('Button clicked! Angular is working!');
