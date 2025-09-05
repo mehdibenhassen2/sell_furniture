@@ -1,4 +1,7 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
 
 <body>
   <div class="container">
@@ -27,20 +30,16 @@
             [checked]="selectedCategories.includes(category)"
           />
 
-
-
-
-
-          
           <span>{{ category }}</span>
         </label>
 
-        <button class="select-all-btn" (click)="selectAllCategories()">
+        <button class="primary-btn" (click)="selectAllCategories()">
           <i class="fas fa-check-square"></i>
           Select All
         </button>
       </div>
     </div>
+    <app-search-bar></app-search-bar>
 
     <div class="category-filters"></div>
     <div *ngIf="loading" class="spinner-container">
@@ -49,84 +48,97 @@
     </div>
     <!-- Items List -->
     <div *ngIf="!loading">
-    <div *ngFor="let item of filteredItems">
-      <div *ngIf="item.available ==true" class="item_container">
-        <div class="item-title">{{ item.title }}</div>
+      <div *ngFor="let item of filteredItems">
+        <div *ngIf="item.available == true" class="item_container">
+          <div class="item-title">{{ item.title }}</div>
 
-        <div class="item-description">
-          <label class="description-label">Description</label>
-          <div
-            class="description-content"
-            [innerHTML]="item.description | descriptionFormat"
-          ></div>
-
-          <div
-            *ngIf="item.retail"
-            class="item-description item-description-small"
-          >
-            <label class="description-label description-label-small">
-              Retail Price
-            </label>
-            <div class="description-content description-content-small">
-              $ {{ item.retail | number : "1.2-2" }} + tax =
-              <span class="final-price">
-                $ {{ item.retail * 1.13 | number : "1.2-2" }}
-              </span>
-            </div>
-          </div>
-          <div
-          *ngIf="item.url"
-          class="item-description item-description-small"
-        >
-          <label class="description-label description-label-small">
-            URL
-          </label>
-          <div class="description-content description-content-small">
-            <a href={{item.url}} target="_blank" rel="noopener noreferrer" class="url">
-              <i class="fas fa-external-link-alt"></i>{{item.url}}
-          </a>
-          </div>
-        </div>
-
-        <div
-        *ngIf="item.instructions"
-        class="item-description item-description-small"
-      >
-        <label class="description-label description-label-small">
-          Instruction Manual
-        </label>
-        <div class="description-content description-content-small">
-          <a href={{item.instructions}} target="_blank" rel="noopener noreferrer" class="url">
-            <i class="fas fa-external-link-alt"></i>{{item.instructions}}
-        </a>
-        </div>
-      </div>
-        </div>
-
-        <div class="item-condition">
-          <label class="description-label">Condition</label>
-
-          <div class="condition-boxes">
+          <div class="item-description">
+            <label class="description-label">Description</label>
             <div
-              class="condition-box"
-              *ngFor="let c of ['Completely New', 'Like New', 'Good', 'Fair']"
-              [class.active]="c.toLowerCase() === item.condition?.toLowerCase()"
+              class="description-content"
+              [innerHTML]="item.description | descriptionFormat"
+            ></div>
+
+            <div
+              *ngIf="item.retail"
+              class="item-description item-description-small"
             >
-              {{ c }}
+              <label class="description-label description-label-small">
+                Retail Price
+              </label>
+              <div class="description-content description-content-small">
+                $ {{ item.retail | number : "1.2-2" }} + tax =
+                <span class="final-price">
+                  $ {{ item.retail * 1.13 | number : "1.2-2" }}
+                </span>
+              </div>
+            </div>
+            <div
+              *ngIf="item.url"
+              class="item-description item-description-small"
+            >
+              <label class="description-label description-label-small">
+                URL
+              </label>
+              <div class="description-content description-content-small">
+                <a
+                  href="{{ item.url }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="url"
+                >
+                  <i class="fas fa-external-link-alt"></i>{{ item.url }}
+                </a>
+              </div>
+            </div>
+
+            <div
+              *ngIf="item.instructions"
+              class="item-description item-description-small"
+            >
+              <label class="description-label description-label-small">
+                Instruction Manual
+              </label>
+              <div class="description-content description-content-small">
+                <a
+                  href="{{ item.instructions }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="url"
+                >
+                  <i class="fas fa-external-link-alt"></i
+                  >{{ item.instructions }}
+                </a>
+              </div>
             </div>
           </div>
 
-          <div class="item-price">
-            <label class="price-label">Price</label>
-            <span class="price-value">${{ item.price }}</span>
-          </div>
-          <app-pictures-container
-            [pictures]="item.pictures"
-          ></app-pictures-container>
-        </div>
-      </div>
+          <div class="item-condition">
+            <label class="description-label">Condition</label>
 
-      <!-- Form to add a new location 
+            <div class="condition-boxes">
+              <div
+                class="condition-box"
+                *ngFor="let c of ['Completely New', 'Like New', 'Good', 'Fair']"
+                [class.active]="
+                  c.toLowerCase() === item.condition?.toLowerCase()
+                "
+              >
+                {{ c }}
+              </div>
+            </div>
+
+            <div class="item-price">
+              <label class="price-label">Price</label>
+              <span class="price-value">${{ item.price }}</span>
+            </div>
+            <app-pictures-container
+              [pictures]="item.pictures"
+            ></app-pictures-container>
+          </div>
+        </div>
+
+        <!-- Form to add a new location 
 <input
   type="text"
   id="locationname"
@@ -136,7 +148,7 @@
 />
 <button (click)="addLocation()">Add</button>
 -->
-    </div>
+      </div>
     </div>
   </div>
 </body>

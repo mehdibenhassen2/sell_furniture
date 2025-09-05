@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PicturesContainerComponent } from './pictures-container/pictures-container.component';
 import { DescriptionFormatPipe } from '../../pipes/description-format.pipe';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 
 @Component({
   selector: 'app-main',
@@ -14,6 +15,7 @@ import { DescriptionFormatPipe } from '../../pipes/description-format.pipe';
     CommonModule,
     HttpClientModule,
     PicturesContainerComponent,
+    SearchBarComponent,
     DescriptionFormatPipe,
   ],
   templateUrl: './main.component.html',

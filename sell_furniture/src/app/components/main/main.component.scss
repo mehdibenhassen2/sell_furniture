@@ -256,29 +256,7 @@ h1 {
   font-weight: 6400;
 }
 
-.select-all-btn {
-  background: #3498db;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 30px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  transition: all 0.3s ease;
-  font-weight: 600;
-  margin-left: auto;
-}
 
-.select-all-btn:hover {
-  background: #2980b9;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
-}
-
-.select-all-btn i {
-  margin-right: 8px;
-}
 
 .items-grid {
   display: grid;
@@ -375,21 +353,7 @@ h1 {
   grid-column: 1 / -1;
 }
 
-@media (max-width: 768px) {
-  .category-filters {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 
-  .select-all-btn {
-    margin-left: 0;
-    margin-top: 10px;
-  }
-
-  .items-grid {
-    grid-template-columns: 1fr;
-  }
-}
 .url {
   color: #3498db;
   text-decoration: none;
