@@ -15,6 +15,7 @@
       <p class="subtitle">This is a personal sale, not a business!</p>
     </header>
 
+    <!-- Category Filters -->
     <div class="category-section">
       <div class="section-title">
         <i class="fas fa-filter"></i>
@@ -29,7 +30,6 @@
             (change)="onCategoryChange($event)"
             [checked]="selectedCategories.includes(category)"
           />
-
           <span>{{ category }}</span>
         </label>
 
@@ -39,19 +39,23 @@
         </button>
       </div>
     </div>
-    <app-search-bar></app-search-bar>
 
-    <div class="category-filters"></div>
+    <!-- Search Bar -->
+    <app-search-bar (searchEvent)="searchItems($event)"></app-search-bar>
+
+    <!-- Loading Spinner -->
     <div *ngIf="loading" class="spinner-container">
       <i class="fas fa-spinner fa-spin fa-2x"></i>
       <p>Loading items...</p>
     </div>
+
     <!-- Items List -->
     <div *ngIf="!loading">
-      <div *ngFor="let item of filteredItems">
-        <div *ngIf="item.available == true" class="item_container">
+      <div *ngFor="let item of filteredItems()">
+        <div *ngIf="item.available" class="item_container">
           <div class="item-title">{{ item.title }}</div>
 
+          <!-- Description -->
           <div class="item-description">
             <label class="description-label">Description</label>
             <div
@@ -59,13 +63,14 @@
               [innerHTML]="item.description | descriptionFormat"
             ></div>
 
+            <!-- Retail Price -->
             <div
               *ngIf="item.retail"
               class="item-description item-description-small"
             >
-              <label class="description-label description-label-small">
-                Retail Price
-              </label>
+              <label class="description-label description-label-small"
+                >Retail Price</label
+              >
               <div class="description-content description-content-small">
                 $ {{ item.retail | number : "1.2-2" }} + tax =
                 <span class="final-price">
@@ -73,13 +78,15 @@
                 </span>
               </div>
             </div>
+
+            <!-- URL -->
             <div
               *ngIf="item.url"
               class="item-description item-description-small"
             >
-              <label class="description-label description-label-small">
-                URL
-              </label>
+              <label class="description-label description-label-small"
+                >URL</label
+              >
               <div class="description-content description-content-small">
                 <a
                   href="{{ item.url }}"
@@ -92,13 +99,14 @@
               </div>
             </div>
 
+            <!-- Instruction Manual -->
             <div
               *ngIf="item.instructions"
               class="item-description item-description-small"
             >
-              <label class="description-label description-label-small">
-                Instruction Manual
-              </label>
+              <label class="description-label description-label-small"
+                >Instruction Manual</label
+              >
               <div class="description-content description-content-small">
                 <a
                   href="{{ item.instructions }}"
@@ -113,9 +121,9 @@
             </div>
           </div>
 
+          <!-- Condition -->
           <div class="item-condition">
             <label class="description-label">Condition</label>
-
             <div class="condition-boxes">
               <div
                 class="condition-box"
@@ -128,10 +136,13 @@
               </div>
             </div>
 
+            <!-- Price -->
             <div class="item-price">
               <label class="price-label">Price</label>
               <span class="price-value">${{ item.price }}</span>
             </div>
+
+            <!-- Pictures -->
             <app-pictures-container
               [pictures]="item.pictures"
             ></app-pictures-container>

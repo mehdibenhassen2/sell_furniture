@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -10,6 +10,15 @@ export interface items {
   id: number;
   title: string;
   pictures: [];
+  description: string;
+  available: boolean;
+  instructions?: string;
+  url?: string;
+  price?: number;
+  retail?: number;
+  condition?: string;
+  category?: string;
+
 }
 
 @Injectable({
@@ -19,11 +28,10 @@ export class LocationService {
   private apiUrl = 'https://sell-furniture-node.onrender.com/api/locations';
   private apiUrlItems = 'https://sell-furniture-node.onrender.com/api/items';
   private apiUrlVisitors = 'https://sell-furniture-node.onrender.com/api/visit';
-  private apiUrlSearch =
-    'https://sell-furniture-node.onrender.com/api/search';
+  private apiUrlSearch = 'https://sell-furniture-node.onrender.com/api/search';
 
   constructor(private http: HttpClient) {}
-
+  displayedItems = signal<any[]>([]);
   // Get all locations
   getLocations(): Observable<Location[]> {
     return this.http.get<Location[]>(this.apiUrl);
@@ -43,14 +51,10 @@ export class LocationService {
     return this.http.post<any>(`${this.apiUrlVisitors}`, {});
   }
   // ✅ Search
-  // POST: log a search term
-  logSearch(term: string): Observable<any> {
-    console.log('hello')
-    return this.http.post<any>(this.apiUrlSearch, { term });
-  }
-
   // GET: fetch filtered items
   searchItems(query: string): Observable<items[]> {
-    return this.http.get<items[]>(`${this.apiUrlSearch}?q=${encodeURIComponent(query)}`);
+    return this.http.get<items[]>(
+      `${this.apiUrlSearch}?q=${encodeURIComponent(query)}`
+    );
   }
 }

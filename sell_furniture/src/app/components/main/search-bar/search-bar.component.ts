@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LocationService } from '../../../services/location.service';
 
@@ -7,22 +7,25 @@ import { LocationService } from '../../../services/location.service';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './search-bar.component.html',
-  styleUrl: './search-bar.component.scss'
+  styleUrl: './search-bar.component.scss',
 })
 export class SearchBarComponent {
-  searchText: string="";
+  searchText: string = '';
+  @Output() searchEvent = new EventEmitter<string>();
   constructor(private locationService: LocationService) {}
 
-  search(searchValue: string) {
+  onSearch(searchValue: string) {
+    this.searchEvent.emit(this.searchText);
     console.log(searchValue);
     // Add .subscribe() to actually execute the HTTP request
-    this.locationService.logSearch(searchValue).subscribe({
+    this.locationService.searchItems(searchValue).subscribe({
       next: (response) => {
         console.log('Search logged successfully', response);
+        this.locationService.displayedItems.set(response);
       },
       error: (error) => {
         console.error('Error logging search', error);
-      }
+      },
     });
   }
 }

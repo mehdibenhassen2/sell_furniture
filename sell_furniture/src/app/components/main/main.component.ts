@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { LocationService } from '../../services/location.service';
+import { Component, OnInit, signal } from '@angular/core';
+import { LocationService, items } from '../../services/location.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PicturesContainerComponent } from './pictures-container/pictures-container.component';
@@ -13,7 +12,6 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
   imports: [
     FormsModule,
     CommonModule,
-    HttpClientModule,
     PicturesContainerComponent,
     SearchBarComponent,
     DescriptionFormatPipe,
@@ -23,10 +21,10 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
 })
 export class MainComponent implements OnInit {
   locations: any[] = [];
-  items: any[] = [];
   newLocation = '';
-  title = 'sell_furniture';
-  categories = [
+  title = 'sale_furniture';
+  categories = [p
+    
     'Bed',
     'Dresser',
     'Bookshelves & Wardrobe',
@@ -37,57 +35,58 @@ export class MainComponent implements OnInit {
     'Other',
   ];
   selectedCategories: string[] = [];
-  filteredItems: any[] = [];
-  loading: boolean = true; // default true until data loads
+
+  filteredItems = signal<items[]>([]);
+  loading: boolean = true;
 
   constructor(private locationService: LocationService) {}
 
   ngOnInit() {
-    // this.loadLocations();
     this.loadItems();
-    this.selectAllCategories(); // Fixed typo in method name
-  }
-
-  loadLocations() {
-    this.locationService.getLocations().subscribe({
-      next: (data) => {
-        this.locations = data;
-      },
-      error: (error) => {
-        console.error('Error loading locations:', error);
-        this.locations = [];
-      },
-    });
+    this.selectAllCategories();
   }
 
   loadItems() {
     this.loading = true;
     this.locationService.getItems().subscribe({
       next: (data) => {
-        this.items = data;
-        this.applyFilters(); // Apply filters after items load
+        this.locationService.displayedItems.set(data);
+        this.applyFilters();
         this.loading = false;
       },
-      error: (error) => {
-        console.error('Error loading items:', error);
-        this.items = [];
+      error: () => {
+        this.locationService.displayedItems.set([]);
         this.applyFilters();
         this.loading = false;
       },
     });
   }
 
-  addLocation() {
-    if (this.newLocation.trim()) {
-      this.locationService.addLocation({ name: this.newLocation }).subscribe({
-        next: (loc) => {
-          this.locations.push(loc);
-          this.newLocation = '';
-        },
-        error: (error) => {
-          console.error('Error adding location:', error);
-        },
-      });
+  searchItems(query: string) {
+    this.loading = true;
+    this.locationService.searchItems(query).subscribe({
+      next: (response) => {
+        this.locationService.displayedItems.set(response);
+        this.applyFilters();
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Search error', err);
+        this.loading = false;
+      },
+    });
+  }
+
+  applyFilters() {
+    const allItems = this.locationService.displayedItems();
+
+    if (this.selectedCategories.length === 0) {
+      this.filteredItems.set([...allItems]);
+    } else {
+      const filtered = allItems.filter((item) =>
+        this.selectedCategories.includes(item.category)
+      );
+      this.filteredItems.set(filtered);
     }
   }
 
@@ -105,19 +104,20 @@ export class MainComponent implements OnInit {
     this.applyFilters();
   }
 
-  applyFilters() {
-    if (this.selectedCategories.length === 0) {
-      this.filteredItems = [...this.items]; // Use spread operator to create new reference
-    } else {
-      this.filteredItems = this.items.filter((item) =>
-        this.selectedCategories.includes(item.category)
-      );
-    }
-  }
-
   selectAllCategories() {
-    // Fixed method name typo
     this.selectedCategories = [...this.categories];
     this.applyFilters();
+  }
+
+  addLocation() {
+    if (!this.newLocation.trim()) return;
+
+    this.locationService.addLocation({ name: this.newLocation }).subscribe({
+      next: (loc) => {
+        this.locations.push(loc);
+        this.newLocation = '';
+      },
+      error: (err) => console.error('Add location error', err),
+    });
   }
 }
