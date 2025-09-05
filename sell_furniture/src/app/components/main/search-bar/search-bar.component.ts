@@ -13,8 +13,16 @@ export class SearchBarComponent {
   searchText: string="";
   constructor(private locationService: LocationService) {}
 
-  search(seachVlaue:string){
-    console.log(seachVlaue);
-    this.locationService.logSearch(seachVlaue);
+  search(searchValue: string) {
+    console.log(searchValue);
+    // Add .subscribe() to actually execute the HTTP request
+    this.locationService.logSearch(searchValue).subscribe({
+      next: (response) => {
+        console.log('Search logged successfully', response);
+      },
+      error: (error) => {
+        console.error('Error logging search', error);
+      }
+    });
   }
 }

@@ -51,7 +51,6 @@ export class LocationService {
 
   // GET: fetch filtered items
   searchItems(query: string): Observable<items[]> {
-
     return this.http.get<items[]>(`${this.apiUrlSearch}?q=${encodeURIComponent(query)}`);
   }
 }
