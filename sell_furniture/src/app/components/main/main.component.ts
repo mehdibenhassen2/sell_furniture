@@ -27,9 +27,10 @@ export class MainComponent implements OnInit {
   categories = [
     'Bed',
     'Dresser',
+    'Bookshelves & Wardrobe',
     'Technology',
     'Decoration',
-    'Chair',
+    'Table & Chair',
     'Toys',
     'Other',
   ];
