@@ -23,8 +23,7 @@ export class MainComponent implements OnInit {
   locations: any[] = [];
   newLocation = '';
   title = 'sale_furniture';
-  categories = [p
-    
+  categories = [
     'Bed',
     'Dresser',
     'Bookshelves & Wardrobe',
