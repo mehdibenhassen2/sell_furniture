@@ -29,6 +29,7 @@ export class LocationService {
   private apiUrlItems = 'https://sell-furniture-node.onrender.com/api/items';
   private apiUrlVisitors = 'https://sell-furniture-node.onrender.com/api/visit';
   private apiUrlSearch = 'https://sell-furniture-node.onrender.com/api/search';
+  private apiUrlcount = 'https://sell-furniture-node.onrender.com/api/totalNumber';
 
   constructor(private http: HttpClient) {}
   displayedItems = signal<any[]>([]);
@@ -39,6 +40,9 @@ export class LocationService {
   // Get all items
   getItems(): Observable<items[]> {
     return this.http.get<items[]>(this.apiUrlItems);
+  }
+  getcountItems(): Observable<any> {
+    return this.http.get<any>(this.apiUrlcount);
   }
 
   // Add new location

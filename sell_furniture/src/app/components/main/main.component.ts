@@ -34,13 +34,14 @@ export class MainComponent implements OnInit {
     'Other',
   ];
   selectedCategories: string[] = [];
-
+  numberItems: number = 0;
   filteredItems = signal<items[]>([]);
   loading: boolean = true;
 
   constructor(private locationService: LocationService) {}
 
   ngOnInit() {
+    this.countItems();
     this.loadItems();
     this.selectAllCategories();
   }
@@ -75,7 +76,16 @@ export class MainComponent implements OnInit {
       },
     });
   }
-
+  countItems() {
+    this.locationService.getcountItems().subscribe({
+      next: (response) => {
+        this.numberItems = response.totalNumber;
+      },
+      error: (err) => {
+        console.error('Search error', err);
+      },
+    });
+  }
   applyFilters() {
     const allItems = this.locationService.displayedItems();
 
