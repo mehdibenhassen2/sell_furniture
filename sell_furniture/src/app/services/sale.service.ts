@@ -41,7 +41,7 @@ export class SaleService {
   getItems(): Observable<items[]> {
     return this.http.get<items[]>(this.apiUrlItems);
   }
-  getcountItems(): Observable<any> {
+  getCountItems(): Observable<any> {
     return this.http.get<any>(this.apiUrlcount);
   }
 

@@ -150,7 +150,6 @@
   gap: 1.5rem;
   margin: 1rem;
   padding: 0.5rem;
-  border-bottom: 2px solid #e0e0e0;
 
   label {
     font-weight: 500;
@@ -207,20 +206,6 @@ h1 {
   margin-bottom: 10px;
 }
 
-.section-title {
-  font-size: 0.8rem;
-  color: #2c3e50;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #ecf0f1;
-  display: flex;
-  align-items: center;
-}
-
-.section-title i {
-  margin-right: 10px;
-  color: #3498db;
-}
-
 .category-filters {
   display: flex;
   flex-wrap: wrap;
@@ -255,8 +240,6 @@ h1 {
   color: #3498db;
   font-weight: 6400;
 }
-
-
 
 .items-grid {
   display: grid;
@@ -353,7 +336,6 @@ h1 {
   grid-column: 1 / -1;
 }
 
-
 .url {
   color: #3498db;
   text-decoration: none;
@@ -381,4 +363,58 @@ h1 {
   min-height: 200px; // adjust to your design
   font-size: 1.2rem;
   color: #666;
+}
+
+.section-title span {
+  font-size: 0.9rem;
+  color: #2c3e50;
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.section-title i {
+  margin-right: 10px;
+  &.filter {
+    color: #3498db;
+  }
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* left content + button on same line */
+  border-bottom: 2px solid #ecf0f1;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.title-left {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* space between icon and text */
+  font-size: 0.95rem;
+  color: #2c3e50;
+}
+
+.title-left i {
+  color: #3498db;
+}
+
+.primary-btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #3498db;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.primary-btn:hover {
+  background: #2980b9;
 }

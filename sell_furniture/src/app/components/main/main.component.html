@@ -11,38 +11,41 @@
 </ul>-->
     <!-- Category Filters -->
     <header>
-      <h1>Moving Sale </h1>
+      <h1>Moving Sale</h1>
       <p class="subtitle">This is a personal sale, not a business!</p>
-      <p class="subtitle">In total <strong>{{numberItems}}</strong> items </p>
-
-   
+      <p class="subtitle">
+        In total <strong>{{ numberItems }}</strong> items
+      </p>
     </header>
 
     <!-- Category Filters -->
-    <div class="category-section">
-      <div class="section-title">
+    <div class="category-section">    <div class="section-title">
+      <div class="title-left">
         <i class="fas fa-filter"></i>
-        Please Check Your Category
+        <span>Please Check Your Category</span>
       </div>
-
-      <div class="category-filters">
-        <label class="filter-label" *ngFor="let category of categories">
-          <input
-            type="checkbox"
-            [value]="category"
-            (change)="onCategoryChange($event)"
-            [checked]="selectedCategories.includes(category)"
-          />
-          <span>{{ category }}</span>
-        </label>
-
-        <button class="primary-btn" (click)="selectAllCategories()">
-          <i class="fas fa-check-square"></i>
-          Select All
-        </button>
-      </div>
+    
+      <button class="primary-btn" (click)="toggleAllCategories()">
+        <i
+          class="fas"
+          [ngClass]="areAllSelected() ? 'fa-times-square' : 'fa-check-square'"
+        ></i>
+        {{ areAllSelected() ? 'Deselect All' : 'Select All' }}
+      </button>
     </div>
-
+    
+    <div class="category-filters">
+      <label class="filter-label" *ngFor="let category of categories; trackBy: trackByCategory">
+        <input
+          type="checkbox"
+          [value]="category"
+          (change)="onCategoryChange($event)"
+          [checked]="selectedCategories.includes(category)"
+        />
+        <span>{{ category }}</span>
+      </label>
+    </div>
+    </div>
     <!-- Search Bar -->
     <app-search-bar (searchEvent)="searchItems($event)"></app-search-bar>
 

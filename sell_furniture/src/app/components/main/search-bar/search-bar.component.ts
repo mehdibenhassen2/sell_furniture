@@ -16,8 +16,7 @@ export class SearchBarComponent {
 
   onSearch(searchValue: string) {
     this.searchEvent.emit(this.searchText);
-    console.log(searchValue);
-    // Add .subscribe() to actually execute the HTTP request
+
     this.saleService.searchItems(searchValue).subscribe({
       next: (response) => {
         console.log('Search logged successfully', response);

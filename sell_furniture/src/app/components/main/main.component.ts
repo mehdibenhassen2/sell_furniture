@@ -76,8 +76,11 @@ export class MainComponent implements OnInit {
       },
     });
   }
+  trackByCategory(index: number, category: string) {
+    return category;
+  }
   countItems() {
-    this.saleService.getcountItems().subscribe({
+    this.saleService.getCountItems().subscribe({
       next: (response) => {
         this.numberItems = response.totalNumber;
       },
@@ -90,7 +93,8 @@ export class MainComponent implements OnInit {
     const allItems = this.saleService.displayedItems();
 
     if (this.selectedCategories.length === 0) {
-      this.filteredItems.set([...allItems]);
+      // No categories selected → show nothing
+      this.filteredItems.set([]);
     } else {
       const filtered = allItems.filter((item) =>
         this.selectedCategories.includes(item.category)
@@ -99,16 +103,29 @@ export class MainComponent implements OnInit {
     }
   }
 
+  areAllSelected(): boolean {
+    return this.selectedCategories.length === this.categories.length;
+  }
+
   onCategoryChange(event: any) {
     const category = event.target.value;
     const checked = event.target.checked;
 
     if (checked) {
-      this.selectedCategories.push(category);
+      this.selectedCategories = [...this.selectedCategories, category];
     } else {
       this.selectedCategories = this.selectedCategories.filter(
         (c) => c !== category
       );
+    }
+    this.applyFilters();
+  }
+
+  toggleAllCategories() {
+    if (this.areAllSelected()) {
+      this.selectedCategories = []; // deselect all
+    } else {
+      this.selectedCategories = [...this.categories]; // select all
     }
     this.applyFilters();
   }
