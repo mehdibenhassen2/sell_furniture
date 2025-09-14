@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { LocationService } from '../../../services/location.service';
+import { SaleService } from '../../../services/sale.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -12,16 +12,16 @@ import { LocationService } from '../../../services/location.service';
 export class SearchBarComponent {
   searchText: string = '';
   @Output() searchEvent = new EventEmitter<string>();
-  constructor(private locationService: LocationService) {}
+  constructor(private saleService: SaleService) {}
 
   onSearch(searchValue: string) {
     this.searchEvent.emit(this.searchText);
     console.log(searchValue);
     // Add .subscribe() to actually execute the HTTP request
-    this.locationService.searchItems(searchValue).subscribe({
+    this.saleService.searchItems(searchValue).subscribe({
       next: (response) => {
         console.log('Search logged successfully', response);
-        this.locationService.displayedItems.set(response);
+        this.saleService.displayedItems.set(response);
       },
       error: (error) => {
         console.error('Error logging search', error);

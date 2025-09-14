@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { LocationService } from './services/location.service';
+import { SaleService } from './services/sale.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MainComponent } from './components/main/main.component';
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   title = 'sell_furniture';
   currentTime = new Date().toLocaleString();
 
-  constructor(private locationService: LocationService) {
+  constructor(private saleService: SaleService) {
     console.log('AppComponent constructor called');
     // Temporarily disable service calls to test if app loads
     // this.loadLocations();
@@ -28,53 +28,51 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     console.log('AppComponent ngOnInit called');
-   this.trackVisitor();
+    this.trackVisitor();
   }
 
   loadLocations() {
-    this.locationService.getLocations().subscribe({
+    this.saleService.getLocations().subscribe({
       next: (data) => {
         this.locations = data;
       },
       error: (error) => {
         console.error('Error loading locations:', error);
         this.locations = []; // Set empty array on error
-      }
+      },
     });
   }
 
   loadItems() {
-    this.locationService.getItems().subscribe({
+    this.saleService.getItems().subscribe({
       next: (data) => {
         this.items = data;
       },
       error: (error) => {
         console.error('Error loading items:', error);
         this.items = []; // Set empty array on error
-      }
+      },
     });
   }
 
   addLocation() {
     if (this.newLocation.trim()) {
-      this.locationService
-        .addLocation({ name: this.newLocation })
-        .subscribe({
-          next: (loc) => {
-            this.locations.push(loc);
-            this.newLocation = '';
-          },
-          error: (error) => {
-            console.error('Error adding location:', error);
-            // Optionally show a user-friendly error message
-          }
-        });
+      this.saleService.addLocation({ name: this.newLocation }).subscribe({
+        next: (loc) => {
+          this.locations.push(loc);
+          this.newLocation = '';
+        },
+        error: (error) => {
+          console.error('Error adding location:', error);
+          // Optionally show a user-friendly error message
+        },
+      });
     }
   }
   trackVisitor() {
-    this.locationService.trackVisitor().subscribe({
+    this.saleService.trackVisitor().subscribe({
       next: () => console.log('Visitor logged ✅'),
-      error: (err) => console.error('Error logging visitor ❌', err)
+      error: (err) => console.error('Error logging visitor ❌', err),
     });
   }
   testClick() {

@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { LocationService, items } from '../../services/location.service';
+import { SaleService, items } from '../../services/sale.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PicturesContainerComponent } from './pictures-container/pictures-container.component';
@@ -38,7 +38,7 @@ export class MainComponent implements OnInit {
   filteredItems = signal<items[]>([]);
   loading: boolean = true;
 
-  constructor(private locationService: LocationService) {}
+  constructor(private saleService: SaleService) {}
 
   ngOnInit() {
     this.countItems();
@@ -48,14 +48,14 @@ export class MainComponent implements OnInit {
 
   loadItems() {
     this.loading = true;
-    this.locationService.getItems().subscribe({
+    this.saleService.getItems().subscribe({
       next: (data) => {
-        this.locationService.displayedItems.set(data);
+        this.saleService.displayedItems.set(data);
         this.applyFilters();
         this.loading = false;
       },
       error: () => {
-        this.locationService.displayedItems.set([]);
+        this.saleService.displayedItems.set([]);
         this.applyFilters();
         this.loading = false;
       },
@@ -64,9 +64,9 @@ export class MainComponent implements OnInit {
 
   searchItems(query: string) {
     this.loading = true;
-    this.locationService.searchItems(query).subscribe({
+    this.saleService.searchItems(query).subscribe({
       next: (response) => {
-        this.locationService.displayedItems.set(response);
+        this.saleService.displayedItems.set(response);
         this.applyFilters();
         this.loading = false;
       },
@@ -77,7 +77,7 @@ export class MainComponent implements OnInit {
     });
   }
   countItems() {
-    this.locationService.getcountItems().subscribe({
+    this.saleService.getcountItems().subscribe({
       next: (response) => {
         this.numberItems = response.totalNumber;
       },
@@ -87,7 +87,7 @@ export class MainComponent implements OnInit {
     });
   }
   applyFilters() {
-    const allItems = this.locationService.displayedItems();
+    const allItems = this.saleService.displayedItems();
 
     if (this.selectedCategories.length === 0) {
       this.filteredItems.set([...allItems]);
@@ -121,7 +121,7 @@ export class MainComponent implements OnInit {
   addLocation() {
     if (!this.newLocation.trim()) return;
 
-    this.locationService.addLocation({ name: this.newLocation }).subscribe({
+    this.saleService.addLocation({ name: this.newLocation }).subscribe({
       next: (loc) => {
         this.locations.push(loc);
         this.newLocation = '';

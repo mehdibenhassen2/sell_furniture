@@ -18,18 +18,18 @@ export interface items {
   retail?: number;
   condition?: string;
   category?: string;
-
 }
 
 @Injectable({
   providedIn: 'root',
 })
-export class LocationService {
+export class SaleService {
   private apiUrl = 'https://sell-furniture-node.onrender.com/api/locations';
   private apiUrlItems = 'https://sell-furniture-node.onrender.com/api/items';
   private apiUrlVisitors = 'https://sell-furniture-node.onrender.com/api/visit';
   private apiUrlSearch = 'https://sell-furniture-node.onrender.com/api/search';
-  private apiUrlcount = 'https://sell-furniture-node.onrender.com/api/totalNumber';
+  private apiUrlcount =
+    'https://sell-furniture-node.onrender.com/api/totalNumber';
 
   constructor(private http: HttpClient) {}
   displayedItems = signal<any[]>([]);
