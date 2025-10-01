@@ -3,12 +3,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { SaleService } from './services/sale.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MainComponent } from './components/main/main.component';
-
+import { SigninModalComponent } from './components/signin-modal/signin-modal.component';
+import { TopBarComponent } from './components/top-bar/top-bar.component';
+import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule, MainComponent],
+  imports: [
+    RouterOutlet,
+    FormsModule,
+    CommonModule,
+    HttpClientModule,
+    SigninModalComponent,
+    TopBarComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'], // ✅ fixed plural
 })
@@ -75,6 +83,7 @@ export class AppComponent implements OnInit {
       error: (err) => console.error('Error logging visitor ❌', err),
     });
   }
+
   testClick() {
     alert('Angular is working! Button click detected!');
     console.log('Button clicked! Angular is working!');

@@ -5,13 +5,11 @@
 
 <body>
   <div class="container">
-    <!--<h1>Locations</h1>
-<ul>
+    <!--<ul>
   <li *ngFor="let loc of locations">{{ loc.name }} {{ loc.city ?? "" }}</li>
 </ul>-->
     <!-- Category Filters -->
     <header>
-      <h1>Moving Sale</h1>
       <p class="subtitle">This is a personal sale, not a business!</p>
       <p class="subtitle">
         In total <strong>{{ numberItems }}</strong> items
@@ -19,41 +17,42 @@
     </header>
 
     <!-- Category Filters -->
-    <div class="category-section">    <div class="section-title">
-      <div class="title-left">
-        <i class="fas fa-filter"></i>
-        <span>Please Check Your Category</span>
+    <div class="category-section">
+      <div class="section-title">
+        <div class="title-left">
+          <i class="fas fa-filter"></i>
+          <span>Please Check Your Category</span>
+        </div>
+
+        <button class="primary-btn" (click)="toggleAllCategories()">
+          <i
+            class="fas"
+            [ngClass]="areAllSelected() ? 'fa-times-square' : 'fa-check-square'"
+          ></i>
+          {{ areAllSelected() ? "Deselect All" : "Select All" }}
+        </button>
       </div>
-    
-      <button class="primary-btn" (click)="toggleAllCategories()">
-        <i
-          class="fas"
-          [ngClass]="areAllSelected() ? 'fa-times-square' : 'fa-check-square'"
-        ></i>
-        {{ areAllSelected() ? 'Deselect All' : 'Select All' }}
-      </button>
-    </div>
-    
-    <div class="category-filters">
-      <label class="filter-label" *ngFor="let category of categories; trackBy: trackByCategory">
-        <input
-          type="checkbox"
-          [value]="category"
-          (change)="onCategoryChange($event)"
-          [checked]="selectedCategories.includes(category)"
-        />
-        <span>{{ category }}</span>
-      </label>
-    </div>
+
+      <div class="category-filters">
+        <label
+          class="filter-label"
+          *ngFor="let category of categories; trackBy: trackByCategory"
+        >
+          <input
+            type="checkbox"
+            [value]="category"
+            (change)="onCategoryChange($event)"
+            [checked]="selectedCategories.includes(category)"
+          />
+          <span>{{ category }}</span>
+        </label>
+      </div>
     </div>
     <!-- Search Bar -->
     <app-search-bar (searchEvent)="searchItems($event)"></app-search-bar>
 
     <!-- Loading Spinner -->
-    <div *ngIf="loading" class="spinner-container">
-      <i class="fas fa-spinner fa-spin fa-2x"></i>
-      <p>Loading items...</p>
-    </div>
+    <app-spinner [loading]="loading"></app-spinner>
 
     <!-- Items List -->
     <div *ngIf="!loading">

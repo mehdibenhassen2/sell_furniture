@@ -5,9 +5,10 @@ import { CommonModule } from '@angular/common';
 import { PicturesContainerComponent } from './pictures-container/pictures-container.component';
 import { DescriptionFormatPipe } from '../../pipes/description-format.pipe';
 import { SearchBarComponent } from './search-bar/search-bar.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @Component({
-  selector: 'app-main',
+  selector: 'app-items-list',
   standalone: true,
   imports: [
     FormsModule,
@@ -15,11 +16,12 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     PicturesContainerComponent,
     SearchBarComponent,
     DescriptionFormatPipe,
+    SpinnerComponent,
   ],
-  templateUrl: './main.component.html',
-  styleUrl: './main.component.scss',
+  templateUrl: './items-list.component.html',
+  styleUrl: './items-list.component.scss',
 })
-export class MainComponent implements OnInit {
+export class ItemsListComponent implements OnInit {
   locations: any[] = [];
   newLocation = '';
   title = 'sale_furniture';

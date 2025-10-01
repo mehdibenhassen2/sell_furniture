@@ -1,0 +1,42 @@
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+
+<nav class="navbar">
+  <div class="logo">
+    <i class="fas fa-rocket"></i>
+    <span>Moving Sale</span>
+  </div>
+
+
+  <ul class="nav-links" [class.active]="mobileMenuOpen">
+    <li>
+      <a routerLink="/itemsList" routerLinkActive="active" (click)="mobileMenuOpen = false">
+        <i class="fas fa-list-ul"></i> Items List
+      </a>
+    </li>
+    <li>
+      <a routerLink="/delivery" routerLinkActive="active" (click)="mobileMenuOpen = false">
+        <i class="fas fa-truck"></i> Delivery
+      </a>
+    </li>
+  </ul>
+
+  <div class="right-section">
+    <button class="sign-in-btn" (click)="displayModalSign()">
+      <i class="fas fa-sign-in-alt"></i> Sign In
+    </button>
+  </div>
+
+
+  <div
+    class="hamburger"
+    [class.active]="mobileMenuOpen"
+    (click)="toggleMobileMenu()"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</nav>

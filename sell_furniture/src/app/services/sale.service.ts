@@ -6,6 +6,7 @@ export interface Location {
   id?: number;
   name: string;
 }
+
 export interface items {
   id: number;
   title: string;
@@ -33,6 +34,7 @@ export class SaleService {
 
   constructor(private http: HttpClient) {}
   displayedItems = signal<any[]>([]);
+
   // Get all locations
   getLocations(): Observable<Location[]> {
     return this.http.get<Location[]>(this.apiUrl);
@@ -54,7 +56,6 @@ export class SaleService {
     // POST an empty object; backend fills timestamp, IP, and userAgent
     return this.http.post<any>(`${this.apiUrlVisitors}`, {});
   }
-  // ✅ Search
   // GET: fetch filtered items
   searchItems(query: string): Observable<items[]> {
     return this.http.get<items[]>(
