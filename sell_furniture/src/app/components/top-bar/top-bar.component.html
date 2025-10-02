@@ -9,20 +9,19 @@
     <span>Moving Sale</span>
   </div>
 
-
   <ul class="nav-links" [class.active]="mobileMenuOpen">
-    <li>
-      <a routerLink="/itemsList" routerLinkActive="active" (click)="mobileMenuOpen = false">
+    <li routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/itemsList" (click)="mobileMenuOpen = false">
         <i class="fas fa-list-ul"></i> Items List
       </a>
     </li>
-    <li>
-      <a routerLink="/delivery" routerLinkActive="active" (click)="mobileMenuOpen = false">
+    <li routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/delivery" (click)="mobileMenuOpen = false">
         <i class="fas fa-truck"></i> Delivery
       </a>
     </li>
-    <li *ngIf="authenticationService.isAuthenticated()">
-      <a routerLink="/addNew" routerLinkActive="active" (click)="mobileMenuOpen = false">
+    <li *ngIf="authenticationService.isAuthenticated()" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/addNew" (click)="mobileMenuOpen = false">
         <i class="fas fa-plus-circle"></i> Add New Item
       </a>
     </li>
@@ -33,13 +32,12 @@
     <button *ngIf="!authenticationService.isAuthenticated()" class="sign-in-btn" (click)="displayModalSign()">
       <i class="fas fa-sign-in-alt"></i> Sign In
     </button>
-  
+
     <!-- Show Sign Out if authenticated -->
     <button *ngIf="authenticationService.isAuthenticated()" class="sign-in-btn" (click)="signOut()">
       <i class="fas fa-sign-out-alt"></i> Sign Out
     </button>
   </div>
-
 
   <div
     class="hamburger"
@@ -51,3 +49,4 @@
     <span></span>
   </div>
 </nav>
+

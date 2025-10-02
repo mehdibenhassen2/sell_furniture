@@ -60,6 +60,15 @@
     display: flex;
     align-items: center;
   }
+  .nav-links li.active-link a {
+    color: #64b5f6; /* blue color for active tab */
+    font-weight: 700;
+  }
+  
+  .nav-links li.active-link a::after {
+    width: 100%; /* underline for active tab */
+    background-color: #64b5f6;
+  }
   
   .nav-links a i {
     margin-right: 8px;
