@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -10,15 +10,21 @@ export class AuthenticationService {
   // signal pour l'état de connexion
   isAuthenticated = signal<boolean>(this.hasToken());
 
-  private apiUrl = 'http://localhost:5000/auth';
+  private apiUrl = 'https://sell-furniture-node.onrender.com/auth';
+
 
   constructor(private http: HttpClient) {}
 
-  // login et sauvegarde du token
-  login(username: string, password: string): Observable<any> {
+  // ✅ Inscription
+  register(email: string, password: string, name?: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, { email, password, name });
+  }
+
+  // ✅ Connexion
+  login(email: string, password: string): Observable<any> {
     return this.http.post<{ token: string }>(
       `${this.apiUrl}/login`,
-      { username, password },
+      { email, password },
       { withCredentials: true }
     ).pipe(
       tap((res) => {
@@ -29,18 +35,30 @@ export class AuthenticationService {
     );
   }
 
-  // logout et suppression du token
+  // ✅ Déconnexion
   logout(): Observable<any> {
     this.clearToken();
     return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true });
   }
 
-  // vérifie la présence du token
+  // ✅ Vérifier si connecté
   isLoggedIn(): boolean {
     return this.isAuthenticated();
   }
 
-  // gestion du modal
+  // ✅ Récupérer infos utilisateur courant
+  getUser(): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('No token found');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.get(`${this.apiUrl}/me`, { headers });
+  }
+
+  // Gestion du modal
   openModal() {
     this.showModal.set(true);
   }

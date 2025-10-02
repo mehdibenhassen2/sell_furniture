@@ -21,11 +21,22 @@
         <i class="fas fa-truck"></i> Delivery
       </a>
     </li>
+    <li *ngIf="authenticationService.isAuthenticated()">
+      <a routerLink="/addNew" routerLinkActive="active" (click)="mobileMenuOpen = false">
+        <i class="fas fa-plus-circle"></i> Add New Item
+      </a>
+    </li>
   </ul>
 
   <div class="right-section">
-    <button class="sign-in-btn" (click)="displayModalSign()">
+    <!-- Show Sign In if NOT authenticated -->
+    <button *ngIf="!authenticationService.isAuthenticated()" class="sign-in-btn" (click)="displayModalSign()">
       <i class="fas fa-sign-in-alt"></i> Sign In
+    </button>
+  
+    <!-- Show Sign Out if authenticated -->
+    <button *ngIf="authenticationService.isAuthenticated()" class="sign-in-btn" (click)="signOut()">
+      <i class="fas fa-sign-out-alt"></i> Sign Out
     </button>
   </div>
 
