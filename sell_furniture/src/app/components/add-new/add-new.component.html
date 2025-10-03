@@ -1,3 +1,5 @@
+<script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+
 <!-- Add Item Form -->
 <div class="add-item-form">
   <h2><i class="fas fa-plus-circle"></i> Add New Item</h2>
@@ -72,7 +74,7 @@
         placeholder="Special instructions"></textarea>
     </div>
 
-    <!-- Images (Drag & Drop) -->
+    <!-- Images (Drag & Drop + Local Select) -->
     <div
       class="form-group dropzone"
       (drop)="onFileDrop($event)"
@@ -90,11 +92,24 @@
       <button type="button" (click)="fileInput.click()">Select Images</button>
     </div>
 
+    <!-- OR Cloudinary Upload -->
+    <div class="form-group">
+      <p>Or choose from Cloudinary</p>
+      <button type="button" class="cloud-btn" (click)="openCloudinaryWidget()">
+        <i class="fas fa-cloud-upload-alt"></i> Upload from Cloudinary
+      </button>
+    </div>
+
     <!-- Preview -->
-    <div class="image-preview" *ngIf="images.length > 0">
+    <div class="image-preview" *ngIf="images.length > 0 || uploadedImages.length > 0">
       <div class="preview-box" *ngFor="let img of images; let i = index">
         <img [src]="img" alt="preview" />
         <button type="button" (click)="removeImage(i)">×</button>
+      </div>
+
+      <div class="preview-box" *ngFor="let cImg of uploadedImages; let j = index">
+        <img [src]="cImg" alt="cloudinary-preview" />
+        <button type="button" (click)="removeCloudImage(j)">×</button>
       </div>
     </div>
 

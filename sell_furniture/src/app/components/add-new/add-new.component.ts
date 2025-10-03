@@ -1,5 +1,5 @@
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+declare var cloudinary: any; // Cloudinary widget global
 
 @Component({
   selector: 'app-add-new',
@@ -17,23 +18,25 @@ import { CommonModule } from '@angular/common';
     HttpClientModule,
   ],
   templateUrl: './add-new.component.html',
-  styleUrl: './add-new.component.scss',
+  styleUrls: ['./add-new.component.scss']
 })
 export class AddNewComponent implements OnInit {
   itemForm!: FormGroup;
-  items: any[] = [];
   categories = [
-    'Bed',
-    'Dresser',
-    'Bookshelves & Wardrobe',
-    'Technology',
-    'Decoration',
-    'Table & Chair',
-    'Toys',
-    'Other',
+    'Bed', 'Dresser', 'Bookshelves & Wardrobe', 'Technology',
+    'Decoration', 'Table & Chair', 'Toys', 'Other'
   ];
+
   loading = false;
+
+  images: string[] = []; // Local previews
+  uploadedImages: string[] = []; // Cloudinary previews
+  selectedFiles: File[] = []; // Local files
+
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
   constructor(private fb: FormBuilder, private http: HttpClient) {}
+
   ngOnInit(): void {
     this.itemForm = this.fb.group({
       title: ['', Validators.required],
@@ -45,79 +48,134 @@ export class AddNewComponent implements OnInit {
       instructions: [''],
       url: [''],
       available: [true],
+      pictures: [[]] // stores Cloudinary URLs
     });
   }
-  images: string[] = []; // store preview URLs
-  files: File[] = []; // store actual files
-  
+
+  /** ==================== Local File Handling ==================== **/
+
   onFileSelect(event: any) {
-    const selectedFiles = event.target.files;
-    this.handleFiles(selectedFiles);
-  }
-  
-  onFileDrop(event: DragEvent) {
-    event.preventDefault();
-    if (event.dataTransfer?.files) {
-      this.handleFiles(event.dataTransfer.files);
+    const files: FileList = event.target.files;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      this.selectedFiles.push(file);
+      this.images.push(URL.createObjectURL(file)); // preview
     }
   }
-  
+
+  onFileDrop(event: DragEvent) {
+    event.preventDefault();
+    const files = event.dataTransfer?.files;
+    if (files) {
+      this.onFileSelect({ target: { files } });
+    }
+  }
+
   onDragOver(event: DragEvent) {
     event.preventDefault();
+    // Optional: add visual highlight
   }
-  
+
   onDragLeave(event: DragEvent) {
     event.preventDefault();
+    // Optional: remove visual highlight
   }
-  
-  handleFiles(fileList: FileList) {
-    Array.from(fileList).forEach((file) => {
-      if (file.type.startsWith('image/')) {
-        this.files.push(file);
-  
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.images.push(e.target.result);
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-  }
-  
+
   removeImage(index: number) {
-    this.files.splice(index, 1);
     this.images.splice(index, 1);
+    this.selectedFiles.splice(index, 1);
   }
+
+  /** ==================== Cloudinary Widget ==================== **/
+
+  openCloudinaryWidget() {
+    cloudinary.openUploadWidget(
+      {
+        cloudName: 'dhm6vqs0t',
+        uploadPreset: 'saleproject_default',
+        sources: ['local', 'url', 'camera', 'google_drive', 'facebook'],
+        multiple: true,
+        folder: 'Home/ikea'
+      },
+      (error: any, result: any) => {
+        if (!error && result && result.event === 'success') {
+          const url = result.info.secure_url;
+          this.uploadedImages.push(url);
+
+          const pictures = this.itemForm.get('pictures')?.value || [];
+          this.itemForm.patchValue({
+            pictures: [...pictures, url]
+          });
+        }
+      }
+    );
+  }
+
+  removeCloudImage(index: number) {
+    this.uploadedImages.splice(index, 1);
+    const pictures = this.itemForm.get('pictures')?.value || [];
+    pictures.splice(index, 1);
+    this.itemForm.patchValue({ pictures });
+  }
+
+  /** ==================== Form Submission ==================== **/
+
   addItem() {
     if (this.itemForm.invalid) return;
-  
-    const token = localStorage.getItem("token");
-  
-    const formData = new FormData();
-    Object.keys(this.itemForm.value).forEach(key => {
-      formData.append(key, this.itemForm.value[key]);
-    });
-  
-    this.files.forEach(file => {
-      formData.append("images", file); // must match upload.array("images")
-    });
-  
+
     this.loading = true;
+
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+
+    // Append regular fields except pictures
+    Object.keys(this.itemForm.value).forEach(key => {
+      if (key !== 'pictures') {
+        formData.append(key, this.itemForm.value[key]);
+      }
+    });
+
+    // Append local files
+    this.selectedFiles.forEach(file => formData.append('images', file));
+
+    // Append Cloudinary URLs
+    const pictureUrls = this.itemForm.get('pictures')?.value || [];
+    pictureUrls.forEach((url: string) => formData.append('pictures', url));
+
     this.http.post(
-      "https://sell-furniture-node.onrender.com/api/items",
+      'https://sell-furniture-node.onrender.com/api/items',
       formData,
       { headers: { Authorization: `Bearer ${token}` } }
     ).subscribe({
       next: (res) => {
-        console.log("✅ Item added:", res);
-        alert("Item added successfully!");
-        this.loading = false;
+        console.log('✅ Item added:', res);
+        alert('Item added successfully!');
+        this.resetForm();
       },
       error: (err) => {
-        console.error("❌ Failed to add item:", err);
-        alert("Failed to add item");
+        console.error('❌ Failed to add item:', err);
+        alert('Failed to add item');
         this.loading = false;
-      }
+      },
+      complete: () => this.loading = false
     });
+  }
+
+  private resetForm() {
+    this.itemForm.reset({
+      title: '',
+      description: '',
+      price: null,
+      category: '',
+      retail: null,
+      condition: 'Good',
+      instructions: '',
+      url: '',
+      available: true,
+      pictures: []
+    });
+    this.selectedFiles = [];
+    this.images = [];
+    this.uploadedImages = [];
   }
 }
