@@ -37,4 +37,42 @@
     border-radius: 6px;
     font-size: 14px;
   }
+  .dropzone {
+    border: 2px dashed #aaa;
+    padding: 20px;
+    text-align: center;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+  }
+  
+  .image-preview {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .preview-box {
+    position: relative;
+  }
+  
+  .preview-box img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .preview-box button {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
   

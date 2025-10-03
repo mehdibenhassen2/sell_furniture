@@ -47,26 +47,77 @@ export class AddNewComponent implements OnInit {
       available: [true],
     });
   }
-
+  images: string[] = []; // store preview URLs
+  files: File[] = []; // store actual files
+  
+  onFileSelect(event: any) {
+    const selectedFiles = event.target.files;
+    this.handleFiles(selectedFiles);
+  }
+  
+  onFileDrop(event: DragEvent) {
+    event.preventDefault();
+    if (event.dataTransfer?.files) {
+      this.handleFiles(event.dataTransfer.files);
+    }
+  }
+  
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+  }
+  
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+  }
+  
+  handleFiles(fileList: FileList) {
+    Array.from(fileList).forEach((file) => {
+      if (file.type.startsWith('image/')) {
+        this.files.push(file);
+  
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.images.push(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+  
+  removeImage(index: number) {
+    this.files.splice(index, 1);
+    this.images.splice(index, 1);
+  }
   addItem() {
     if (this.itemForm.invalid) return;
-
-    const token = localStorage.getItem('token'); // stored at login
-    this.http
-      .post(
-        'https://sell-furniture-node.onrender.com/api/items',
-        this.itemForm.value,
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-      .subscribe({
-        next: (res) => {
-          console.log('✅ Item added:', res);
-          alert('Item added successfully!');
-        },
-        error: (err) => {
-          console.error('❌ Failed to add item:', err);
-          alert('Failed to add item');
-        },
-      });
+  
+    const token = localStorage.getItem("token");
+  
+    const formData = new FormData();
+    Object.keys(this.itemForm.value).forEach(key => {
+      formData.append(key, this.itemForm.value[key]);
+    });
+  
+    this.files.forEach(file => {
+      formData.append("images", file); // must match upload.array("images")
+    });
+  
+    this.loading = true;
+    this.http.post(
+      "https://sell-furniture-node.onrender.com/api/items",
+      formData,
+      { headers: { Authorization: `Bearer ${token}` } }
+    ).subscribe({
+      next: (res) => {
+        console.log("✅ Item added:", res);
+        alert("Item added successfully!");
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error("❌ Failed to add item:", err);
+        alert("Failed to add item");
+        this.loading = false;
+      }
+    });
   }
 }
