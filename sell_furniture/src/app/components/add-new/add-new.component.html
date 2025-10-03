@@ -1,1 +1,65 @@
-<p>add-new works!</p>
+    <!-- Add Item Form -->
+<div class="add-item-form">
+    <h2><i class="fas fa-plus-circle"></i> Add New Item</h2>
+  
+    <form [formGroup]="itemForm" (ngSubmit)="addItem()">
+      <!-- Name -->
+      <div class="form-group">
+        <label for="name">Title</label>
+        <input 
+          id="title" 
+          type="text" 
+          formControlName="title" 
+          placeholder="Item title" />
+      </div>
+  
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea 
+          id="description" 
+          formControlName="description" 
+          placeholder="Item description"></textarea>
+      </div>
+  
+      <!-- Price -->
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input 
+          id="price" 
+          type="number" 
+          formControlName="price" 
+          placeholder="Price in $" />
+      </div>
+  
+      <!-- Category -->
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" formControlName="category">
+          <option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </option>
+        </select>
+      </div>
+  
+      <!-- Condition -->
+      <div class="form-group">
+        <label for="condition">Condition</label>
+        <select id="condition" formControlName="condition">
+          <option value="Completely New">Completely New</option>
+          <option value="Like New">Like New</option>
+          <option value="Good">Good</option>
+          <option value="Fair">Fair</option>
+        </select>
+      </div>
+  
+      <!-- Submit -->
+      <button 
+        type="submit" 
+        class="primary-btn" 
+        [disabled]="itemForm.invalid">
+        <i class="fas fa-save"></i> Save Item
+      </button>
+    </form>
+  </div>
+  
