@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
 import { SaleService } from './services/sale.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SigninModalComponent } from './components/signin-modal/signin-modal.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { RouterOutlet } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { ItemsActions } from './store/features/items/items.actions';
+import {
+  selectAvailableItems,
+  selectItemsLoading,
+} from './store/features/items/items.selectors';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -13,29 +18,36 @@ import { RouterOutlet } from '@angular/router';
     RouterOutlet,
     FormsModule,
     CommonModule,
-    HttpClientModule,
     SigninModalComponent,
     TopBarComponent,
   ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'], // ✅ fixed plural
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   locations: any[] = [];
-  items: any[] = [];
   newLocation = '';
   title = 'sell_furniture';
   currentTime = new Date().toLocaleString();
 
-  constructor(private saleService: SaleService) {
+  // Store selectors - only show available items
+  items$ = this.store.select(selectAvailableItems);
+  loading$ = this.store.select(selectItemsLoading);
+
+  constructor(private saleService: SaleService, private store: Store) {
     console.log('AppComponent constructor called');
-    // Temporarily disable service calls to test if app loads
-    // this.loadLocations();
-    // this.loadItems();
   }
 
   ngOnInit() {
     console.log('AppComponent ngOnInit called');
+
+    // Dispatch action to load items from store
+    this.store.dispatch(ItemsActions.loadItems());
+
+    // Load locations
+    this.loadLocations();
+
+    // Track visitor
     this.trackVisitor();
   }
 
@@ -47,18 +59,6 @@ export class AppComponent implements OnInit {
       error: (error) => {
         console.error('Error loading locations:', error);
         this.locations = []; // Set empty array on error
-      },
-    });
-  }
-
-  loadItems() {
-    this.saleService.getItems().subscribe({
-      next: (data) => {
-        this.items = data;
-      },
-      error: (error) => {
-        console.error('Error loading items:', error);
-        this.items = []; // Set empty array on error
       },
     });
   }
