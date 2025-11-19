@@ -6,6 +6,12 @@ import { PicturesContainerComponent } from './pictures-container/pictures-contai
 import { DescriptionFormatPipe } from '../../pipes/description-format.pipe';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { Store } from '@ngrx/store';
+import { ItemsActions } from '../../store/features/items/items.actions';
+import {
+  selectAllItems,
+  selectItemsLoading,
+} from '../../store/features/items/items.selectors';
 
 @Component({
   selector: 'app-items-list',
@@ -40,28 +46,32 @@ export class ItemsListComponent implements OnInit {
   filteredItems = signal<items[]>([]);
   loading: boolean = true;
 
-  constructor(private saleService: SaleService) {}
+  // Store observables
+  allItems$ = this.store.select(selectAllItems);
+  storeLoading$ = this.store.select(selectItemsLoading);
+
+  constructor(private saleService: SaleService, private store: Store) {}
 
   ngOnInit() {
-    this.countItems();
-    this.loadItems();
-    this.selectAllCategories();
-  }
+    console.log('ItemsListComponent initialized');
 
-  loadItems() {
-    this.loading = true;
-    this.saleService.getItems().subscribe({
-      next: (data) => {
-        this.saleService.displayedItems.set(data);
-        this.applyFilters();
-        this.loading = false;
-      },
-      error: () => {
-        this.saleService.displayedItems.set([]);
-        this.applyFilters();
-        this.loading = false;
-      },
+    // Dispatch action to load items from store
+    this.store.dispatch(ItemsActions.loadItems());
+
+    // Subscribe to store items and apply filters
+    this.allItems$.subscribe((items) => {
+      console.log('Items from store:', items.length);
+      this.saleService.displayedItems.set(items);
+      this.applyFilters();
     });
+
+    // Subscribe to loading state
+    this.storeLoading$.subscribe((loading) => {
+      this.loading = loading;
+    });
+
+    this.countItems();
+    this.selectAllCategories();
   }
 
   searchItems(query: string) {

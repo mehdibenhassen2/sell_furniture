@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
 import { isDevMode } from '@angular/core';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideClientHydration } from '@angular/platform-browser';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
@@ -15,6 +16,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
     provideHttpClient(withFetch()),
+    provideClientHydration(),
     provideStore({ items: itemsReducer }),
     provideEffects([ItemsEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
