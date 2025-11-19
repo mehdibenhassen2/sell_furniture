@@ -89,27 +89,37 @@ export class AddNewComponent implements OnInit {
   /** ==================== Cloudinary Widget ==================== **/
 
   openCloudinaryWidget() {
-    cloudinary.openUploadWidget(
+    // Ensure Cloudinary Media Library script is loaded in index.html:
+    // <script src="https://media-library.cloudinary.com/global/all.js"></script>
+  
+    const cloudinaryMediaLibrary = cloudinary.createMediaLibrary(
       {
-        cloudName: 'dhm6vqs0t',
-        uploadPreset: 'saleproject_default',
-        sources: ['local', 'url', 'camera', 'google_drive', 'facebook'],
+        cloud_name: 'dhm6vqs0t',
+        api_key: '279487912748128', // replace with your Cloudinary API key
+        username: 'alfredbouha@gmail.com', // your Cloudinary account email
         multiple: true,
-        folder: 'Home/ikea'
+        insert_caption: 'Select Image',
+        search: {
+          expression: 'folder="Home/ikea"', // restricts to that folder
+        },
       },
-      (error: any, result: any) => {
-        if (!error && result && result.event === 'success') {
-          const url = result.info.secure_url;
-          this.uploadedImages.push(url);
-
+      {
+        insertHandler: (data: any) => {
+          const selectedUrls = data.assets.map((asset: any) => asset.secure_url);
+  
+          this.uploadedImages.push(...selectedUrls);
+  
           const pictures = this.itemForm.get('pictures')?.value || [];
           this.itemForm.patchValue({
-            pictures: [...pictures, url]
+            pictures: [...pictures, ...selectedUrls],
           });
-        }
+        },
       }
     );
+  
+    cloudinaryMediaLibrary.show();
   }
+  
 
   removeCloudImage(index: number) {
     this.uploadedImages.splice(index, 1);
