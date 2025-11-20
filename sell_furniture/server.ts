@@ -17,6 +17,21 @@ export function app(): express.Express {
 
   const angularApp = new AngularNodeAppEngine();
 
+  // Set security headers including CSP
+  server.use((req, res, next) => {
+    res.setHeader(
+      'Content-Security-Policy',
+      "default-src 'self'; " +
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://widget.cloudinary.com https://media-library.cloudinary.com https://cdnjs.cloudflare.com; " +
+        "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; " +
+        "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; " +
+        "img-src 'self' data: https: blob:; " +
+        "connect-src 'self' https://sell-furniture-node.onrender.com https://res.cloudinary.com; " +
+        "frame-src 'self' https://widget.cloudinary.com;"
+    );
+    next();
+  });
+
   // Serve static files from /browser
   server.use(
     express.static(browserDistFolder, {
