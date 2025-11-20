@@ -1,7 +1,5 @@
-import { APP_BASE_HREF } from '@angular/common';
 import {
   AngularNodeAppEngine,
-  createNodeRequestHandler,
   isMainModule,
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
@@ -18,7 +16,7 @@ export function app(): express.Express {
   const angularApp = new AngularNodeAppEngine();
 
   // Set security headers including CSP
-  server.use((req, res, next) => {
+  server.use((_req, res, next) => {
     res.setHeader(
       'Content-Security-Policy',
       "default-src 'self'; " +
