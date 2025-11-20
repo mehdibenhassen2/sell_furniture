@@ -19,7 +19,8 @@ bootstrapApplication(AppComponent, {
     provideClientHydration(),
     provideStore({ items: itemsReducer }),
     provideEffects([ItemsEffects]),
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    // Only enable devtools in development mode
+    ...(isDevMode() ? [provideStoreDevtools({ maxAge: 25 })] : []),
     provideRouterStore(),
   ],
 }).catch((err) => console.error(err));
