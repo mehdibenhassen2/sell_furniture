@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, computed, effect } from '@angular/core';
 import { SaleService, items } from '../../services/sale.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -12,6 +12,7 @@ import {
   selectAllItems,
   selectItemsLoading,
 } from '../../store/features/items/items.selectors';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-items-list',
@@ -41,16 +42,35 @@ export class ItemsListComponent implements OnInit {
     'Toys',
     'Other',
   ];
-  selectedCategories: string[] = [];
+  selectedCategories = signal<string[]>([]);
   numberItems: number = 0;
-  filteredItems = signal<items[]>([]);
-  loading: boolean = true;
 
-  // Store observables
-  allItems$ = this.store.select(selectAllItems);
-  storeLoading$ = this.store.select(selectItemsLoading);
+  // Convert store observables to signals
+  allItems = toSignal(this.store.select(selectAllItems), { initialValue: [] });
+  loading = toSignal(this.store.select(selectItemsLoading), {
+    initialValue: true,
+  });
 
-  constructor(private saleService: SaleService, private store: Store) {}
+  // Computed filtered items based on selected categories
+  filteredItems = computed(() => {
+    const items = this.allItems();
+    const selected = this.selectedCategories();
+
+    if (selected.length === 0) {
+      return [];
+    }
+
+    return items.filter((item) => selected.includes(item.category || ''));
+  });
+
+  constructor(private saleService: SaleService, private store: Store) {
+    // Effect to update service displayedItems when allItems changes
+    effect(() => {
+      const items = this.allItems();
+      this.saleService.displayedItems.set(items);
+      console.log('Items updated in service:', items.length);
+    });
+  }
 
   ngOnInit() {
     console.log('ItemsListComponent initialized');
@@ -58,39 +78,25 @@ export class ItemsListComponent implements OnInit {
     // Dispatch action to load items from store
     this.store.dispatch(ItemsActions.loadItems());
 
-    // Subscribe to store items and apply filters
-    this.allItems$.subscribe((items) => {
-      console.log('Items from store:', items.length);
-      this.saleService.displayedItems.set(items);
-      this.applyFilters();
-    });
-
-    // Subscribe to loading state
-    this.storeLoading$.subscribe((loading) => {
-      this.loading = loading;
-    });
-
     this.countItems();
     this.selectAllCategories();
   }
 
   searchItems(query: string) {
-    this.loading = true;
     this.saleService.searchItems(query).subscribe({
       next: (response) => {
         this.saleService.displayedItems.set(response);
-        this.applyFilters();
-        this.loading = false;
       },
       error: (err) => {
         console.error('Search error', err);
-        this.loading = false;
       },
     });
   }
-  trackByCategory(index: number, category: string) {
+
+  trackByCategory(_index: number, category: string) {
     return category;
   }
+
   countItems() {
     this.saleService.getCountItems().subscribe({
       next: (response) => {
@@ -101,50 +107,33 @@ export class ItemsListComponent implements OnInit {
       },
     });
   }
-  applyFilters() {
-    const allItems = this.saleService.displayedItems();
-
-    if (this.selectedCategories.length === 0) {
-      // No categories selected → show nothing
-      this.filteredItems.set([]);
-    } else {
-      const filtered = allItems.filter((item) =>
-        this.selectedCategories.includes(item.category)
-      );
-      this.filteredItems.set(filtered);
-    }
-  }
 
   areAllSelected(): boolean {
-    return this.selectedCategories.length === this.categories.length;
+    return this.selectedCategories().length === this.categories.length;
   }
 
   onCategoryChange(event: any) {
     const category = event.target.value;
     const checked = event.target.checked;
+    const current = this.selectedCategories();
 
     if (checked) {
-      this.selectedCategories = [...this.selectedCategories, category];
+      this.selectedCategories.set([...current, category]);
     } else {
-      this.selectedCategories = this.selectedCategories.filter(
-        (c) => c !== category
-      );
+      this.selectedCategories.set(current.filter((c) => c !== category));
     }
-    this.applyFilters();
   }
 
   toggleAllCategories() {
     if (this.areAllSelected()) {
-      this.selectedCategories = []; // deselect all
+      this.selectedCategories.set([]); // deselect all
     } else {
-      this.selectedCategories = [...this.categories]; // select all
+      this.selectedCategories.set([...this.categories]); // select all
     }
-    this.applyFilters();
   }
 
   selectAllCategories() {
-    this.selectedCategories = [...this.categories];
-    this.applyFilters();
+    this.selectedCategories.set([...this.categories]);
   }
 
   addLocation() {

@@ -42,7 +42,7 @@
             type="checkbox"
             [value]="category"
             (change)="onCategoryChange($event)"
-            [checked]="selectedCategories.includes(category)"
+            [checked]="selectedCategories().includes(category)"
           />
           <span>{{ category }}</span>
         </label>
@@ -52,10 +52,10 @@
     <app-search-bar (searchEvent)="searchItems($event)"></app-search-bar>
 
     <!-- Loading Spinner -->
-    <app-spinner [loading]="loading"></app-spinner>
+    <app-spinner [loading]="loading()"></app-spinner>
 
     <!-- Items List -->
-    <div *ngIf="!loading">
+    <div *ngIf="!loading()">
       <div *ngFor="let item of filteredItems()">
         <div *ngIf="item.available" class="item_container">
           <div class="item-title">{{ item.title }}</div>
